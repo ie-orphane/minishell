@@ -1,3 +1,4 @@
 minishell
 *.[ao]
 test*
+.vscode/

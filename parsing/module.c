@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   module.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:14 by mbentale          #+#    #+#             */
-/*   Updated: 2025/04/13 18:49:56 by ielyatim         ###   ########.fr       */
+/*   Created: 2025/04/13 18:33:14 by ielyatim          #+#    #+#             */
+/*   Updated: 2025/04/13 18:35:27 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "parsing.h"
 
-# include "parsing.h"
-
-#endif // MAIN_H
+int	ft_test(void)
+{
+	return (1337);
+}

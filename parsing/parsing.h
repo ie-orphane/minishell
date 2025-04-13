@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:14 by mbentale          #+#    #+#             */
-/*   Updated: 2025/04/13 18:49:56 by ielyatim         ###   ########.fr       */
+/*   Created: 2025/04/13 18:32:25 by ielyatim          #+#    #+#             */
+/*   Updated: 2025/04/13 18:37:34 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef PARSING_H
 
-# include "parsing.h"
+# define PARSING_H
 
-#endif // MAIN_H
+# include <stdio.h>
+
+int	ft_test(void);
+
+#endif // PARSING_H
