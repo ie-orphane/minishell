@@ -10,41 +10,48 @@ RESET = \033[0m
 
 NAME = minishell
 LIBFT = libft/libft.a
-MAKE = make -C
+MAKE = make --no-print-directory
 
-SRCS = test.c parsing/module.c\
-		$(addprefix execution/, echo_builtin.c pwd_builtin.c env_builtin.c)
+SRCS = test.c
+# SRCS += $(addprefix execution/, \
+# 		echo_builtin.c pwd_builtin.c env_builtin.c)
+SRCS += $(addprefix parsing/, \
+		ft_bzero.c ft_calloc.c \
+		ft_strlen.c ft_strcmp.c \
+		ft_strlcat.c ft_strdup.c \
+		ft_lstremove_if.c \
+		ft_split.c ft_substr.c ft_strsjoin.c)
 OBJS = $(SRCS:.c=.o)
-INCS = main.h parsing/parsing.h\
-		execution/exec.h
+INCS = main.h parsing/parsing.h \
+		# execution/exec.h
 
 CC = cc
-RM = rm -rf
 
 CFLAGS = -Wall -Wextra -Werror
-IFLAGS = -Iexecution -Iparsing -Ilibft -lreadline
+IFLAGS = -Iexecution -Iparsing -Ilibft
+LFLAGS = -lreadline -Llibft -lft
+
 
 all : $(NAME)
-
-# added libft as a dependency
-
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) $(LIBFT) $(IFLAGS) -o $(@)
-	@echo "🔗 $(CYAN)$(notdir $(OBJS)) $(@:=.o) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
 
 %.o: %.c $(INCS)
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
+$(NAME): $(OBJS) $(LIBFT)
+	@$(CC) $(OBJS) -fsanitize=address -o $(@) $(LFLAGS)
+	@echo "🔗 $(CYAN)$(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
+
+
 $(LIBFT):
-	@make -C libft
+	@$(MAKE) -C libft
 
 clean :
 	@find . -type f -name "*.o" -printf "🧹 $(BLACK)%f$(RESET)\n" -delete
 
 fclean : clean
-	@make fclean -C libft
-	@$(RM) $(NAME) && echo "🧹 $(BLACK)$(NAME)$(RESET)"
+	@$(MAKE) fclean -C libft
+	@find . -type f -name "$(NAME)" -printf "🧹 $(BLACK)%f$(RESET)\n" -delete
 
 re : fclean all
 
