@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   ft_strjoinc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 18:32:25 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/08 09:28:32 by ielyatim         ###   ########.fr       */
+/*   Created: 2025/05/08 09:17:49 by ielyatim          #+#    #+#             */
+/*   Updated: 2025/05/08 09:21:03 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
+#include "libft.h"
 
-# define PARSING_H
+char	*ft_strjoinc(const char *__str, char c)
+{
+	size_t	len;
+	char	*str;
 
-# include "libft.h"
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-int		ft_strcmp(const char *s1, const char *s2);
-t_list	*ft_parse(char *line);
-
-#endif // PARSING_H
+	if (!__str)
+		return (NULL);
+	len = ft_strlen(__str);
+	str = (char *)malloc(len + 2);
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, __str, len + 2);
+	str[len] = c;
+	str[len + 1] = '\0';
+	return (str);
+}

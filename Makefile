@@ -15,12 +15,9 @@ MAKE = make --no-print-directory
 SRCS = test.c
 # SRCS += $(addprefix execution/, \
 # 		echo_builtin.c pwd_builtin.c env_builtin.c)
+# ft_substr.c ft_strsjoin.c
 SRCS += $(addprefix parsing/, \
-		ft_bzero.c ft_calloc.c \
-		ft_strlen.c ft_strcmp.c \
-		ft_strlcat.c ft_strdup.c \
-		ft_lstremove_if.c \
-		ft_split.c ft_substr.c ft_strsjoin.c)
+		ft_strcmp.c ft_parse.c )
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		# execution/exec.h
@@ -39,8 +36,8 @@ all : $(NAME)
 	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) -fsanitize=address -o $(@) $(LFLAGS)
-	@echo "🔗 $(CYAN)$(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
+	@$(CC) $(OBJS) $(LFLAGS) -fsanitize=address -o $(@)
+	@echo "🔗 $(CYAN)$(notdir $(LIBFT)) $(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
 
 
 $(LIBFT):

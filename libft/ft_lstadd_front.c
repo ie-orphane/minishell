@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/31 17:18:44 by mbentale          #+#    #+#             */
-/*   Updated: 2024/11/04 10:27:18 by mbentale         ###   ########.fr       */
+/*   Created: 2024/10/31 10:07:16 by mbentale          #+#    #+#             */
+/*   Updated: 2025/05/08 09:12:28 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_front(t_list **lst, t_list *__new)
 {
-	t_list	*last_node;
-
-	if (lst == NULL)
+	if (lst == NULL || __new == NULL)
 		return ;
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		last_node = ft_lstlast(*lst);
-		last_node->next = new;
-	}
+	__new->next = *lst;
+	*lst = __new;
 }
