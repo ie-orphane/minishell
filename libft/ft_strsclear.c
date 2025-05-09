@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strsclear.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/09 09:51:28 by ielyatim         ###   ########.fr       */
+/*   Created: 2025/05/09 09:47:30 by ielyatim          #+#    #+#             */
+/*   Updated: 2025/05/09 10:06:15 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_strsclear(void *__ptr)
 {
-	char	*line;
-	t_list	*lst;
+	size_t	i;
+	char	**strs;
 
-	while (true)
+	strs = (char **)__ptr;
+	if (!strs || !strs)
+		return ;
+	i = 0;
+	while (strs[i])
 	{
-		line = readline("$> ");
-		if (!line)
-			break ;
-		lst = ft_parse(line);
-		ft_lstclear(&lst, ft_strsclear);
+		free(strs[i]);
+		i++;
 	}
+	free(strs);
 }

@@ -6,22 +6,11 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:25:13 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/08 09:26:17 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:00:02 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-void	ft_lstshow(t_list *lst)
-{
-	printf("{\n");
-	while (lst)
-	{
-		printf("  %s,\n", (char *)lst->content);
-		lst = lst->next;
-	}
-	printf("}\n");
-}
 
 t_list	*ft_spell(const char *str)
 {
@@ -173,9 +162,11 @@ t_list	*ft_parse(char *line)
 	lst = ft_lstsplit(lst);
 	ft_lstclear(&tmp, free);
 	if (!lst)
-		return (printf("SyntaxError: Unclosed quote.\n"), NULL);
+		return (ft_error("SyntaxError", "Unclosed quote"), NULL);
 	ft_trim(&lst);
 	ft_lstremove_if(&lst, "", ft_strcmp);
-	ft_lstshow(lst);
+	tmp = lst;
+	lst = ft_fill(lst);
+	ft_lstclear(&tmp, free);
 	return (lst);
 }

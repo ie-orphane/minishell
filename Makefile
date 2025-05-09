@@ -17,7 +17,8 @@ SRCS = test.c
 # 		echo_builtin.c pwd_builtin.c env_builtin.c)
 # ft_substr.c ft_strsjoin.c
 SRCS += $(addprefix parsing/, \
-		ft_strcmp.c ft_parse.c )
+		ft_strcmp.c ft_parse.c \
+		ft_fill.c utils.c )
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		# execution/exec.h
@@ -26,7 +27,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 IFLAGS = -Iexecution -Iparsing -Ilibft
-LFLAGS = -lreadline -Llibft -lft
+LFLAGS = -lreadline -Llibft -lft -fsanitize=address
 
 
 all : $(NAME)
@@ -36,7 +37,7 @@ all : $(NAME)
 	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) $(LFLAGS) -fsanitize=address -o $(@)
+	@$(CC) $(OBJS) $(LFLAGS) -o $(@)
 	@echo "🔗 $(CYAN)$(notdir $(LIBFT)) $(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
 
 

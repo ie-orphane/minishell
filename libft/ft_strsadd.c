@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strsadd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/09 09:51:28 by ielyatim         ###   ########.fr       */
+/*   Created: 2025/05/09 09:47:33 by ielyatim          #+#    #+#             */
+/*   Updated: 2025/05/09 09:50:58 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "libft.h"
 
-int	main(void)
+char	**ft_strsadd(char **_strs, char *str)
 {
-	char	*line;
-	t_list	*lst;
+	size_t	len;
+	char	**strs;
+	size_t	i;
 
-	while (true)
+	if (!str)
+		return (NULL);
+	len = 0;
+	while (_strs && _strs[len])
+		len++;
+	strs = malloc(sizeof(char *) * (len + 2));
+	if (!strs)
+		return (NULL);
+	i = 0;
+	while (i < len)
 	{
-		line = readline("$> ");
-		if (!line)
-			break ;
-		lst = ft_parse(line);
-		ft_lstclear(&lst, ft_strsclear);
+		strs[i] = _strs[i];
+		i++;
 	}
+	strs[len] = str;
+	strs[len + 1] = NULL;
+	free(_strs);
+	return (strs);
 }
