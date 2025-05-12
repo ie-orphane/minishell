@@ -6,24 +6,35 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:58:28 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/09 09:58:31 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/12 18:57:54 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-bool	ft_isredir(char *str)
-{
-	return (ft_strcmp(str, ">>") == 0 || ft_strcmp(str, "<<") == 0
-		|| ft_strcmp(str, "<") == 0 || ft_strcmp(str, ">") == 0);
-}
-
-bool	ft_ispipe(char *str)
-{
-	return (ft_strcmp(str, "|") == 0);
-}
-
 void	ft_error(char *type, char *err)
 {
 	printf(RED "%s" BLACK ":" RESET " %s.\n", type, err);
+}
+
+char	*env_key(char *str)
+{
+	int		i;
+	char	*key;
+
+	i = 1;
+	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '$')
+		i++;
+	key = ft_substr(str, 0, i);
+	return (key);
+}
+
+char	*env_value(char *key)
+{
+	char	*value;
+
+	value = getenv(key + 1);
+	if (!value)
+		value = "";
+	return (value);
 }

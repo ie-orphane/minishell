@@ -18,7 +18,7 @@ SRCS = test.c
 # ft_substr.c ft_strsjoin.c
 SRCS += $(addprefix parsing/, \
 		ft_strcmp.c ft_parse.c \
-		ft_fill.c utils.c )
+		ft_fill.c ft_isx.c utils.c )
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		# execution/exec.h
