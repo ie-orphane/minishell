@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:26:51 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/09 10:09:15 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:06:16 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**ft_split(const char *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
-char	*ft_strreplace(char *__dst, char *__src, char *__sub);
+char	*ft_strreplace(char *__dst, char *__src, char *__sub, size_t __start);
 char	*ft_strjoinc(const char *__str, char c);
 
 void	ft_putchar_fd(char c, int fd);

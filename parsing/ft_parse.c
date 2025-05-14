@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:25:13 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/12 18:59:09 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:26:07 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@ static char	*__expand(char *str)
 	ft_bzero(c, sizeof(c));
 	while (str[c[0]])
 	{
-		if (!c[2] && str[c[0]] == '\'')
+		if (!c[2] && ft_isquote(str + c[0]))
 			c[3] = str[c[0]];
-		if (!c[2] && c[3] != '\'' && str[c[0]] == '$')
+		if (!(c[2] && c[3] == '\'') && str[c[0]] == '$')
 		{
 			strs[2] = env_key(str + c[0]);
-			c[0]++;
 			strs[3] = env_value(strs[2]);
 			strs[1] = str;
-			str = ft_strreplace(str, strs[2], strs[3]);
+			str = ft_strreplace(str, strs[2], strs[3], c[0]);
 			c[0] += ft_strlen(strs[3]) - 1;
 			free(strs[1]);
 			free(strs[2]);

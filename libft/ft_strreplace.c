@@ -6,13 +6,13 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:16:52 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/08 09:17:07 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:05:20 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strreplace(char *__dst, char *__src, char *__sub)
+char	*ft_strreplace(char *__dst, char *__src, char *__sub, size_t __start)
 {
 	char	*pos;
 	size_t	len_src;
@@ -20,10 +20,10 @@ char	*ft_strreplace(char *__dst, char *__src, char *__sub)
 	size_t	len_dst;
 	char	*result;
 
-	if (!__dst || !__src || !__sub)
+	if (!__dst || !__src || !__sub || __start >= ft_strlen(__dst))
 		return (NULL);
 	len_dst = ft_strlen(__dst);
-	pos = ft_strnstr(__dst, __src, len_dst);
+	pos = ft_strnstr(__dst + __start, __src, len_dst - __start);
 	if (!pos)
 		return (ft_strdup(__dst));
 	len_src = ft_strlen(__src);
