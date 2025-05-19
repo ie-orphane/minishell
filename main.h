@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:06:14 by mbentale          #+#    #+#             */
-/*   Updated: 2025/04/13 18:49:56 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:14:32 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define MAIN_H
 
 # include "parsing.h"
+# include "exec.h"
 
 #endif // MAIN_H

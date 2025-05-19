@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 18:27:21 by mbentale         ###   ########.fr       */
+/*   Created: 2025/05/14 15:01:09 by mbentale          #+#    #+#             */
+/*   Updated: 2025/05/14 15:02:05 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "exec.h"
 
-int	main(void)
+int	ft_exit(t_env *env)
 {
-	char	*line;
-	t_list	*lst;
-
-	while (true)
-	{
-		line = readline(GREEN BOLD "larrysh"  "> "RESET);
-		if (!line)
-			break ;
-		lst = ft_parse(line);
-		char **arr = lst->content;
-		for (int i = 0; arr[i]; i++)
-			printf("%s; ", arr[i]);
-		printf("\n");
-		if (ft_strcmp(*arr, "echo") == 0)
-			ft_echo(arr);
-		ft_lstclear(&lst, ft_strsclear);
-	}
+	// code here
+	free_env_list(env);
+	exit(0);
 }

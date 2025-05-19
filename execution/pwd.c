@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 18:27:21 by mbentale         ###   ########.fr       */
+/*   Created: 2025/05/01 11:43:35 by mbentale          #+#    #+#             */
+/*   Updated: 2025/05/17 10:50:02 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "exec.h"
 
-int	main(void)
+int	ft_pwd(void)
 {
-	char	*line;
-	t_list	*lst;
+	char	*cwd;
 
-	while (true)
+	cwd = getcwd(NULL, 0);
+	if (cwd)
 	{
-		line = readline(GREEN BOLD "larrysh"  "> "RESET);
-		if (!line)
-			break ;
-		lst = ft_parse(line);
-		char **arr = lst->content;
-		for (int i = 0; arr[i]; i++)
-			printf("%s; ", arr[i]);
-		printf("\n");
-		if (ft_strcmp(*arr, "echo") == 0)
-			ft_echo(arr);
-		ft_lstclear(&lst, ft_strsclear);
+		ft_putendl_fd(cwd, 1);
+		free(cwd);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		perror("pwd");
+		return (EXIT_FAILURE);
 	}
 }

@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 18:27:21 by mbentale         ###   ########.fr       */
+/*   Created: 2025/05/14 15:31:42 by mbentale          #+#    #+#             */
+/*   Updated: 2025/05/14 15:32:02 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	*line;
-	t_list	*lst;
+	size_t	i;
 
-	while (true)
+	i = 0;
+	while (s1[i] == s2[i])
 	{
-		line = readline(GREEN BOLD "larrysh"  "> "RESET);
-		if (!line)
-			break ;
-		lst = ft_parse(line);
-		char **arr = lst->content;
-		for (int i = 0; arr[i]; i++)
-			printf("%s; ", arr[i]);
-		printf("\n");
-		if (ft_strcmp(*arr, "echo") == 0)
-			ft_echo(arr);
-		ft_lstclear(&lst, ft_strsclear);
+		if (s1[i] == '\0' && s2[i] == '\0')
+			return (0);
+		i++;
 	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

@@ -13,33 +13,30 @@ LIBFT = libft/libft.a
 MAKE = make --no-print-directory
 
 SRCS = test.c
-# SRCS += $(addprefix execution/, \
-# 		echo_builtin.c pwd_builtin.c env_builtin.c)
-# ft_substr.c ft_strsjoin.c
-SRCS += $(addprefix parsing/, \
-		ft_strcmp.c ft_parse.c \
-		ft_fill.c ft_isx.c utils.c )
+# SRCS += $(addprefix parsing/, \
+# 		ft_strcmp.c ft_parse.c \
+# 		ft_fill.c ft_isx.c utils.c )
+SRCS += $(addprefix execution/, \
+		echo.c cd.c pwd.c env.c utils.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
-		# execution/exec.h
+		execution/exec.h
 
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 IFLAGS = -Iexecution -Iparsing -Ilibft
-LFLAGS = -lreadline -Llibft -lft -fsanitize=address
-
+LFLAGS = -lreadline -Llibft -lft #-fsanitize=address
 
 all : $(NAME)
 
 %.o: %.c $(INCS)
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
-	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
+	@echo -e "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(OBJS) $(LFLAGS) -o $(@)
-	@echo "🔗 $(CYAN)$(notdir $(LIBFT)) $(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
-
+	@echo -e "🔗 $(CYAN)$(notdir $(LIBFT)) $(notdir $(OBJS)) $(BLACK)=> $(YELLOW)$(@)$(RESET)"
 
 $(LIBFT):
 	@$(MAKE) -C libft
