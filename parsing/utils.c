@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:58:28 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/14 13:22:53 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:37:58 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ char	*env_key(char *str)
 	char	*key;
 
 	i = 1;
-	while (str[i] && str[i] != ' ' && !ft_isquote(str + i)
-		&& str[i] != '$')
+	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	key = ft_substr(str, 0, i);
 	return (key);
