@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 19:45:00 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:04:06 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXEC_H
 
 # include "../libft/libft.h"
+# include <errno.h>
 # include <limits.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -22,7 +23,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <errno.h>
 
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
@@ -50,10 +50,13 @@ t_env				*init_env(char **env);
 void				ft_putendl(char *s);
 void				ft_putendl_fd(char *s, int fd);
 void				free_env_list(t_env *env);
-char	*get_env_value(t_env *env, const char *key, size_t len); // delete later
-int	update_oldpwd(t_env *env);                                // delete later
+void				*ft_malloc(int size);
 
 // Helper functions
-void				*ft_malloc(int size);
+int					go_to_path(int option, t_env *env);
+int					check_key_exist(t_env **env, char *value);
+void				print_error(char **args);
+int					update_oldpwd(t_env *env);
+int					update_pwd(t_env *env);
 
 #endif // EXEC_H
