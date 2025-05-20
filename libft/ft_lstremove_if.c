@@ -6,13 +6,14 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:19:41 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/08 09:11:29 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:48:32 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)())
+void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)(),
+		void (*del)(void *))
 {
 	t_list	*current;
 	t_list	*prev;
@@ -24,7 +25,7 @@ void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)())
 	prev = NULL;
 	while (current)
 	{
-		if (cmp(current->content, ref) != 0)
+		if (cmp(ref, current->content) != 0)
 		{
 			prev = current;
 			current = current->next;
@@ -36,7 +37,6 @@ void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)())
 		else
 			*lst = current->next;
 		current = current->next;
-		free(tmp->content);
-		free(tmp);
+		ft_lstdelone(tmp, del);
 	}
 }

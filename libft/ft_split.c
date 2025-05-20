@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:13:27 by mbentale          #+#    #+#             */
-/*   Updated: 2024/11/06 15:18:01 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:18:42 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_words(const char *str, char c)
+static int	count_words(const char *str, char *set)
 {
 	int	i;
 	int	count;
@@ -21,9 +21,9 @@ static int	count_words(const char *str, char c)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] != c)
+		if (!ft_strchr(set, str[i]))
 		{
-			while (str[i] != c && str[i])
+			while (!ft_strchr(set, str[i]) && str[i])
 				i++;
 			count++;
 		}
@@ -33,19 +33,19 @@ static int	count_words(const char *str, char c)
 	return (count);
 }
 
-static char	*word_alloc(const char *str, char c)
+static char	*word_alloc(const char *str, char *set)
 {
 	int		i;
 	char	*ptr;
 
 	i = 0;
-	while (str[i] && str[i] != c)
+	while (str[i] && !ft_strchr(set, str[i]))
 		i++;
 	ptr = malloc(sizeof(char) * (i + 1));
 	if (ptr == NULL)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != c)
+	while (str[i] && !ft_strchr(set, str[i]))
 	{
 		ptr[i] = str[i];
 		i++;
@@ -68,29 +68,29 @@ static void	*free_all(char **s, int count)
 	return (NULL);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split(const char *str, char *set)
 {
 	int		i;
 	char	**arr;
 
-	if (s == NULL)
+	if (str == NULL || !set)
 		return (NULL);
-	arr = malloc(sizeof(char *) * (count_words(s, c) + 1));
+	arr = malloc(sizeof(char *) * (count_words(str, set) + 1));
 	if (arr == NULL)
 		return (NULL);
 	i = 0;
-	while (*s)
+	while (*str)
 	{
-		while (*s && (*s) == c)
-			s++;
-		if (*s)
+		while (*str && ft_strchr(set, *str))
+			str++;
+		if (*str)
 		{
-			arr[i] = word_alloc(s, c);
+			arr[i] = word_alloc(str, set);
 			if (arr[i] == NULL)
 				return (free_all(arr, i));
 			i++;
-			while (*s && (*s) != c)
-				s++;
+			while (*str && !ft_strchr(set, *str))
+				str++;
 		}
 	}
 	arr[i] = NULL;

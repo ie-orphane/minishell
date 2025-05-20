@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 12:26:51 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 18:32:26 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:18:54 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		ft_atoi(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strtrim(const char *s1, const char *set);
-char	**ft_split(const char *s, char c);
+char	**ft_split(const char *str, char *set);
 char	*ft_itoa(int n);
 char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
@@ -88,7 +88,9 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)());
+void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)(),
+			void (*del)(void *));
+void	ft_lstinsert(t_list **lst, t_list *__new);
 
 char	**ft_strsadd(char **_strs, char *str);
 void	ft_strsclear(void *__ptr);
