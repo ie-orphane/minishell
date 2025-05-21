@@ -12,13 +12,14 @@ NAME = minishell
 LIBFT = libft/libft.a
 MAKE = make --no-print-directory
 
-SRCS = test.c
+SRCS = main.c
 SRCS += $(addprefix execution/, \
-		echo.c cd.c cd_utils.c cd_extra_utils.c pwd.c env.c utils.c)
+		echo.c cd.c cd_utils.c cd_extra_utils.c \
+		export.c pwd.c env.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c \
-		ft_isx.c utils.c ft_cmd.c \
-		get_next_line.c ft_putstr_non_printable.c )
+		ft_isx.c utils.c ft_cmd.c env.c \
+		get_next_line.c ft_putstr_non_printable.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		execution/exec.h
@@ -26,7 +27,7 @@ INCS = main.h parsing/parsing.h \
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
-IFLAGS = -Iexecution -Iparsing -Ilibft
+IFLAGS = -Iexecution -Iparsing -Ilibft -I.
 LFLAGS = -lreadline -Llibft -lft -fsanitize=address
 
 all : $(NAME)

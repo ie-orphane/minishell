@@ -203,8 +203,8 @@ t_list	*ft_parse(char *line)
 	ft_lstremove_if(&lst, &((t_cmd){.type = T_NONE}), ft_cmdcmp_type,
 		ft_cmdfree);
 	ft_cmditer(&lst, &__trim);
-	ft_lstremove_if(&lst, &((t_cmd){.type = T_EMPTY}), ft_cmdcmp_type,
-		ft_cmdfree);
+	// ft_lstremove_if(&lst, &((t_cmd){.type = T_EMPTY}), ft_cmdcmp_type,
+	// 	ft_cmdfree);
 	tmp = lst;
 	lst = ft_fill(lst);
 	ft_lstclear(&tmp, ft_cmdfree);

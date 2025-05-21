@@ -12,12 +12,16 @@
 
 #include "main.h"
 
-int	main(void)
+int	main(int argc, char **argv, char **envi)
 {
 	char	*line;
 	t_list	*lst;
 	char	**args;
+	t_list	*env;
 
+	(void)argc;
+	(void)argv;
+	env = _env_init(envi);
 	while (true)
 	{
 		line = readline(GREEN BOLD "larrysh> " RESET);
@@ -27,6 +31,9 @@ int	main(void)
 		args = lst->content;
 		if (ft_strcmp(*args, "echo") == 0)
 			ft_echo(args);
+		else if (ft_strcmp(*args, "export") == 0)
+			ft_export(args + 1, &env);
 		ft_lstclear(&lst, ft_strsclear);
 	}
+	ft_lstclear(&env, _env_free);
 }

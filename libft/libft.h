@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <stdint.h>
+# include <stdbool.h>
 
 # define BLACK "\x1B[30m"
 # define RED "\x1B[31m"
@@ -86,7 +87,7 @@ t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *__new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
-void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	ft_lstiter(t_list *lst, void (*f)());
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)(),
 			void (*del)(void *));
