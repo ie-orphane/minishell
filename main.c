@@ -33,6 +33,8 @@ int	main(int argc, char **argv, char **envi)
 			ft_echo(args);
 		else if (ft_strcmp(*args, "export") == 0)
 			ft_export(args + 1, &env);
+		else if (ft_strcmp(*args, "unset") == 0)
+			ft_unset(args + 1, &env);
 		ft_lstclear(&lst, ft_strsclear);
 	}
 	ft_lstclear(&env, _env_free);

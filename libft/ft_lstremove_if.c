@@ -12,6 +12,38 @@
 
 #include "libft.h"
 
+/**
+ * @brief Removes all nodes from te list `lst` that match the given reference
+ * 	  value `ref` using the provided comparison function `cmp`.
+ *    The content of the removed nodes is deleted using the provided delete
+ *    function `del`.
+ * 
+ * 
+ * ```c
+ * // Example usage:
+ * int	ft_cmp(int *ref, char *content)
+ * {
+ * 	char * tmp = ft_itoa(*ref);
+ * 	int cmp = ft_strcmp(tmp, content);
+ * 	free(tmp);
+ * 	return (cmp);
+ * }
+ * 
+ * t_list *lst = NULL;
+ * for (int i = 0; i < 5; i++)
+ * 	ft_lstadd_back(&lst, ft_lstnew(ft_itoa(i)));
+ * // "1" -> "2" -> "3" -> "4" -> NULL
+ * 
+ * int ref = 2;
+ * ft_lstremove_if(&lst, &ref, ft_cmp, free);
+ * // "1" -> "3" -> "4" -> NULL
+ * ```
+ * 
+ * @param lst A pointer to the head of the list.
+ * @param ref The reference value to compare against.
+ * @param cmp A function pointer to the comparison function.
+ * @param del A function pointer to the delete function for the content.
+ */
 void	ft_lstremove_if(t_list **lst, void *ref, int (*cmp)(),
 		void (*del)(void *))
 {

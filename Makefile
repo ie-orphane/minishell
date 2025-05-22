@@ -15,7 +15,7 @@ MAKE = make --no-print-directory
 SRCS = main.c
 SRCS += $(addprefix execution/, \
 		echo.c cd.c cd_utils.c cd_extra_utils.c \
-		export.c pwd.c env.c utils.c)
+		export.c unset.c pwd.c env.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c \
 		ft_isx.c utils.c ft_cmd.c env.c \

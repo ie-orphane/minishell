@@ -30,5 +30,6 @@ char		*_env_get(t_list *env, char *key);
 void		_env_set(t_list **env, char *key, char *value);
 
 int			ft_export(char **args, t_list **env);
+int			ft_unset(char **args, t_list **env);
 
 #endif // MAIN_H
