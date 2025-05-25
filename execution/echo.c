@@ -6,13 +6,13 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:03:57 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/19 18:43:16 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/25 11:28:23 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	is_n_flag(char *str)
+static int	is_n_flag(char *str)
 {
 	int	i;
 

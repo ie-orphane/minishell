@@ -6,71 +6,54 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 12:56:23 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/17 08:28:06 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/25 11:21:47 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	ft_env(t_env *env)
+/**
+ * @brief Initializes the ENV_VARs from the provided array.
+ *
+ * ```c
+ * // Example usage:
+ * char *env[] = {"KEY1=VALUE1", "KEY2=VALUE2", NULL};
+ * t_list *env_list = env_init(env);
+ * ```
+ *
+ * @param env The array of ENV_VARs.
+ *
+ * @return A linked list of ENV_VAR nodes.
+ */
+t_list	*env_init(char **__env)
 {
-	while (env && env->next != NULL)
+	int		pos;
+	char	*key;
+	char	*value;
+	t_list	*env;
+	size_t	i;
+
+	env = NULL;
+	i = 0;
+	while (__env[i])
 	{
-		ft_putendl(env->value);
-		env = env->next;
+		pos = ft_strchr(__env[i], '=') - __env[i];
+		key = ft_substr(__env[i], 0, pos);
+		value = ft_substr(__env[i], pos + 1, ft_strlen(__env[i]) - pos);
+		ft_lstadd_back(&env, ft_lstnew(env_new(key, value)));
+		i++;
 	}
-	if (env)
-		ft_putendl(env->value);
-	return (EXIT_SUCCESS);
+	return (env);
 }
 
-static t_env	*new_env_node(char *value)
+int	ft_env(t_list *env)
 {
-	t_env	*new;
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->value = ft_strdup(value);
-	new->next = NULL;
-	return (new);
-}
-
-t_env	*init_env(char **env)
-{
-	t_env	*head;
-	t_env	*tail;
-	t_env	*new;
-
-	head = NULL;
-	tail = NULL;
-	while (*env)
-	{
-		new = new_env_node(*env);
-		if (!new)
-		{
-			free_env_list(head);
-			return (NULL);
-		}
-		if (!head)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
-		env++;
-	}
-	return (head);
-}
-
-void	free_env_list(t_env *env)
-{
-	t_env	*tmp;
-
 	while (env)
 	{
-		tmp = env->next;
-		free(env->value);
-		free(env);
-		env = tmp;
+		if (((t_env *)env->content)->value)
+			printf("%s=%s\n", ((t_env *)env->content)->key,
+				((t_env *)env->content)->value);
+		env = env->next;
 	}
+	return (EXIT_SUCCESS);
 }

@@ -3,36 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:14:33 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/20 15:04:21 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/25 11:27:03 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	ft_cd(char **args, t_env *env)
+static void	print_error(char **args)
 {
-	int	cd_ret;
+	ft_putstr_fd("larrysh: cd: ", STDERR);
+	if (args[2])
+		ft_putendl_fd("too many arguments", STDERR);
+	else
+		ft_putendl_fd(strerror(errno), STDERR);
+}
 
+static char	*update_path(t_list *env, char *key)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
+	env_set(&env, ft_strdup(key), cwd);
+	return (((t_env *)env->content)->value);
+}
+
+int	ft_cd(char **args, t_list *env)
+{
+	int		cd_ret;
+
+	if (!args[1])
+		return (EXIT_FAILURE);
 	if (args[2])
 	{
 		print_error(args);
 		return (EXIT_FAILURE);
 	}
-	if (!args[1])
-		cd_ret = go_to_path(0, env);
-	else if (ft_strcmp(args[1], "-") == 0)
-		cd_ret = go_to_path(1, env);
 	else
 	{
-		update_oldpwd(env);
+		update_path(env, "OLDPWD");
 		cd_ret = chdir(args[1]);
 		if (cd_ret == -1)
 			print_error(args);
 	}
 	if (cd_ret != -1)
-		update_pwd(env);
+		update_path(env, "PWD");
 	return (cd_ret);
 }

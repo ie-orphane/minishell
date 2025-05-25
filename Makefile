@@ -14,11 +14,11 @@ MAKE = make --no-print-directory
 
 SRCS = main.c
 SRCS += $(addprefix execution/, \
-		echo.c cd.c cd_utils.c cd_extra_utils.c \
-		export.c unset.c pwd.c env.c utils.c)
+		echo.c pwd.c cd.c env.c env_utils.c \
+		export.c unset.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c \
-		ft_isx.c utils.c ft_cmd.c env.c \
+		ft_isx.c utils.c ft_cmd.c \
 		get_next_line.c ft_putstr_non_printable.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
@@ -34,7 +34,7 @@ all : $(NAME)
 
 %.o: %.c $(INCS)
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
-	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
+	@echo -e "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(OBJS) $(LFLAGS) -o $(@)

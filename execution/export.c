@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:48:05 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/21 09:48:13 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/25 11:42:12 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	__isvalid_key(char *str)
 	return (true);
 }
 
-static void	__show(_t_env *env)
+static void	__show(t_env *env)
 {
 	printf("declare -x %s", env->key);
 	if (env->value)
@@ -62,7 +62,7 @@ int	ft_export(char **args, t_list **env)
 			printf("export: `%s': not a valid identifier\n", *(args++));
 			continue ;
 		}
-		_env_set(env, key, value);
+		env_set(env, key, value);
 		args++;
 	}
 	return (status);
