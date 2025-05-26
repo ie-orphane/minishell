@@ -20,9 +20,9 @@ int	ft_cmdcmp_type(t_cmd *ref, t_cmd *cmd)
 void	ft_cmdshow(t_list *lst)
 {
 	const char	*types[] = {[T_PIPE] = "PIPE", [T_HER_DOC] = "HER_DOC",
-			[T_APPEND] = "APPEND", [T_INPUT] = "INPUT", [T_STRING] = "STRING",
-			[T_OUTPUT] = "OUTPUT", [T_ARG] = "ARG", [T_EMPTY] = "EMPTY",
-			[T_NONE] = "NONE", [T_NULL] = "NULL"};
+	[T_APPEND] = "APPEND", [T_INPUT] = "INPUT", [T_STRING] = "STRING",
+	[T_OUTPUT] = "OUTPUT", [T_ARG] = "ARG", [T_EMPTY] = "EMPTY",
+	[T_NONE] = "NONE", [T_NULL] = "NULL"};
 
 	printf("{\n");
 	while (lst)

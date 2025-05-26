@@ -18,8 +18,9 @@ SRCS += $(addprefix execution/, \
 		export.c unset.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c \
-		ft_isx.c utils.c ft_cmd.c \
-		get_next_line.c ft_putstr_non_printable.c)
+		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \
+		get_next_line.c ft_putstr_non_printable.c \
+		ft_strrand.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		execution/exec.h
@@ -34,7 +35,7 @@ all : $(NAME)
 
 %.o: %.c $(INCS)
 	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
-	@echo -e "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
+	@echo "🔨 $(BLUE)$(notdir $<) $(BLACK)=> $(CYAN)$(notdir $@)$(RESET)"
 
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(OBJS) $(LFLAGS) -o $(@)

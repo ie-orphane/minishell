@@ -65,17 +65,17 @@ static char	*herdoc(t_cmd *cmd)
 	char	*line;
 	char	*tmp;
 
-	if (fork() == 0)
+	if (fork() != 0)
 	{
 		doc = ft_strdup("");
 		while (true)
 		{
-			ft_putstr_fd(BLACK, 1);
-			ft_putstr_fd(cmd->value, 1);
-			ft_putstr_fd("> " RESET, 1);
+			ft_putstrs_fd((char *[]){BLACK, cmd->value, "> ", RESET, NULL}, 1);
 			line = get_next_line(0);
-			if (!line || ft_strncmp(line, cmd->value, ft_strlen(line) - 1) == 0)
-				return (free(line), doc);
+			tmp = ft_strtrim(line, "\n");
+			if (!line || ft_strcmp(tmp, cmd->value) == 0)
+				return (free(tmp), get_next_line(-1), free(line), doc);
+			free(tmp);
 			if (cmd->type != T_STRING)
 				line = __expand(line);
 			tmp = doc;
@@ -88,17 +88,19 @@ static char	*herdoc(t_cmd *cmd)
 	return (NULL);
 }
 
-static int	redirection(t_list *node)
+static char	*redirection(t_list *node)
 {
 	bool	isherdoc;
 	char	*doc;
 	t_cmd	*cmd;
 	char	*tmp;
+	char	*path;
+	int		fd;
 
 	if (!node->next)
 	{
-		ft_error("SyntaxError", "Unexpected token 'end'");
-		return (-1);
+		ft_error("SyntaxError", "Unexpected token 'newline'");
+		return (NULL);
 	}
 	isherdoc = ((t_cmd *)node->content)->type == T_HER_DOC;
 	cmd = node->next->content;
@@ -107,20 +109,19 @@ static int	redirection(t_list *node)
 	{
 		tmp = ft_strreplace("Unexpected token '%s'", "%s", cmd->value, 0);
 		ft_error("SyntaxError", tmp);
-		free(tmp);
-		return (-1);
+		return (free(tmp), NULL);
 	}
 	if (isherdoc)
 	{
 		doc = herdoc(cmd);
 		if (doc)
 		{
-			tmp = doc;
-			doc = ft_strnon_printable(doc);
-			printf("%s\n", doc);
+			tmp = ft_strrand(7);
+			path = ft_strjoin("/tmp/", tmp);
 			free(tmp);
-			free(doc);
-			exit(0);
+			fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			ft_putstr_fd(doc, fd);
+			return (close(fd), free(doc), path);
 		}
 	}
 	return (0);
@@ -132,6 +133,7 @@ t_list	*ft_fill(t_list *__lst)
 	t_list	*lst;
 	t_list	*node;
 	char	*content;
+	char	*tmp;
 
 	node = __lst;
 	arr = NULL;
@@ -151,8 +153,11 @@ t_list	*ft_fill(t_list *__lst)
 		}
 		else if (ft_cmdis_redir((t_cmd *)node->content))
 		{
-			if (redirection(node) == -1)
-				break ;
+			tmp = redirection(node);
+			if (tmp == NULL)
+				exit(0);
+			free(((t_cmd *)node->next->content)->value);
+			((t_cmd *)node->next->content)->value = tmp;
 			node = node->next;
 		}
 		else
@@ -161,5 +166,6 @@ t_list	*ft_fill(t_list *__lst)
 	}
 	if (arr)
 		ft_lstadd_back(&lst, ft_lstnew(arr));
+	ft_cmdshow(__lst);
 	return (lst);
 }

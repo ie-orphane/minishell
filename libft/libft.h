@@ -18,6 +18,8 @@
 # include <limits.h>
 # include <stdint.h>
 # include <stdbool.h>
+# include <fcntl.h>
+# include <stdio.h>
 
 # define BLACK "\x1B[30m"
 # define RED "\x1B[31m"
@@ -74,6 +76,7 @@ char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 char	*ft_strreplace(char *__dst, char *__src, char *__sub, size_t __start);
 char	*ft_strjoinc(const char *__str, char c);
+char	*ft_strrand(size_t len);
 
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);

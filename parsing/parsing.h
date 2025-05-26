@@ -42,6 +42,8 @@ typedef struct s_cmd
 	char	*value;
 }			t_cmd;
 
+void		ft_putstrs_fd(char **s, int fd);
+
 int			ft_cmdcmp_type(t_cmd *ref, t_cmd *cmd);
 void		ft_cmdshow(t_list *lst);
 void		ft_cmdfree(void *content);
