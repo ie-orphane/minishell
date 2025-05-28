@@ -6,13 +6,13 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:14:33 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/25 11:27:03 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/28 08:41:34 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	print_error(char **args)
+static void	print_cd_error(char **args)
 {
 	ft_putstr_fd("larrysh: cd: ", STDERR);
 	if (args[2])
@@ -40,7 +40,7 @@ int	ft_cd(char **args, t_list *env)
 		return (EXIT_FAILURE);
 	if (args[2])
 	{
-		print_error(args);
+		print_cd_error(args);
 		return (EXIT_FAILURE);
 	}
 	else
@@ -48,7 +48,7 @@ int	ft_cd(char **args, t_list *env)
 		update_path(env, "OLDPWD");
 		cd_ret = chdir(args[1]);
 		if (cd_ret == -1)
-			print_error(args);
+			print_cd_error(args);
 	}
 	if (cd_ret != -1)
 		update_path(env, "PWD");

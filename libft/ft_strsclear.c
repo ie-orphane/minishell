@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsclear.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:47:30 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/09 10:06:15 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:27:14 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_strsclear(void *__ptr)
 	char	**strs;
 
 	strs = (char **)__ptr;
-	if (!strs || !strs)
+	if (!strs || !*strs)
 		return ;
 	i = 0;
 	while (strs[i])

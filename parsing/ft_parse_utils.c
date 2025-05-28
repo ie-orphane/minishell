@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:04:50 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/20 14:26:59 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:15:01 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,6 @@ t_list	*ft_fill(t_list *__lst)
 	}
 	if (arr)
 		ft_lstadd_back(&lst, ft_lstnew(arr));
-	ft_cmdshow(__lst);
+	// ft_cmdshow(__lst);
 	return (lst);
 }
