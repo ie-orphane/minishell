@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/14 15:01:09 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/28 12:01:25 by mbentale         ###   ########.fr       */
+/*   Created: 2025/06/01 07:57:11 by mbentale          #+#    #+#             */
+/*   Updated: 2025/06/01 07:57:13 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void cleanup_sh(t_list **env, t_list **lst, char **line)
+static void	cleanup_sh(t_list **env, t_list **lst, char **line)
 {
 	if (env)
 		ft_lstclear(env, env_free);
@@ -22,7 +22,7 @@ void cleanup_sh(t_list **env, t_list **lst, char **line)
 		free(*line);
 }
 
-bool	is_numeric(char *str)
+static bool	is_numeric(char *str)
 {
 	int	i;
 
@@ -38,8 +38,9 @@ bool	is_numeric(char *str)
 	return (true);
 }
 
-void	print_exit_error(char **args)
+static void	print_exit_error(char **args)
 {
+	ft_putendl_fd("exit", STDERR);
 	ft_putstr_fd("larrysh: exit: ", STDERR);
 	if (!is_numeric(args[1]))
 	{
@@ -52,31 +53,30 @@ void	print_exit_error(char **args)
 		ft_putendl_fd(strerror(errno), STDERR);
 }
 
-int	ft_exit(char **args, t_list **env)
+int	ft_exit(char **args, t_list **env, t_list **lst, char **line)
 {
-	int status;
+	int	status;
 
 	if (!args[1])
 	{
-		ft_lstclear(env, env_free);
-		// cleanup_sh(env, lst, line);
+		cleanup_sh(env, lst, line);
+		ft_putendl_fd("exit", STDERR);
 		exit(0);
 	}
 	if (!is_numeric(args[1]))
 	{
 		print_exit_error(args);
-		// cleanup_sh(env, lst, line);
-		ft_lstclear(env, env_free);
+		cleanup_sh(env, lst, line);
 		exit(255);
 	}
 	if (args[2])
 	{
 		print_exit_error(args);
-		// ft_lstclear(env, env_free);
+		cleanup_sh(env, lst, line);
 		return (1);
 	}
-	status = ft_atoi(args[1]);
-	// cleanup_sh(env, lst, line);
-	ft_lstclear(env, env_free);
+	status = (unsigned char)ft_atoi(args[1]);
+	cleanup_sh(env, lst, line);
+	ft_putendl_fd("exit", STDERR);
 	exit(status);
 }
