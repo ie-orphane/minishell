@@ -6,13 +6,14 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:06:18 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/28 11:51:29 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/06/01 07:28:59 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-static void	__is_builtin(char **args, t_list **env)
+// static void	__is_builtin(char **args, t_list **env)
+static void	__is_builtin(char **args, t_list **env, t_list **lst, char **line)
 {
 	if (ft_strcmp(*args, "echo") == 0)
 		ft_echo(args);
@@ -27,7 +28,7 @@ static void	__is_builtin(char **args, t_list **env)
 	else if (ft_strcmp(*args, "env") == 0)
 		ft_env(*env);
 	else if (ft_strcmp(*args, "exit") == 0)
-		ft_exit(args, env);
+		ft_exit(args, env, lst, line);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -50,9 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!lst)
 			continue ;
 		args = lst->content;
-		// if (ft_strcmp(*args, "exit") == 0)
-		// 	ft_exit(args, &env, &lst, &line);
-		__is_builtin(args, &env);
+		__is_builtin(args, &env, &lst, &line);
 		ft_lstclear(&lst, ft_strsclear);
 	}
 	ft_lstclear(&env, env_free);

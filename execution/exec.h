@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/28 11:51:41 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/05/31 08:34:47 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int			ft_env(t_list *env);
 int			ft_cd(char **args, t_list *env);
 int			ft_export(char **args, t_list **env);
 int			ft_unset(char **args, t_list **env);
-// int			ft_exit(char **args, t_list **env, t_list **lst, char **line);
-int			ft_exit(char **args, t_list **env);
+int			ft_exit(char **args, t_list **env, t_list **lst, char **line);
+// int			ft_exit(char **args, t_list **env);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);

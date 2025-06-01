@@ -34,7 +34,7 @@ static char	*update_path(t_list *env, char *key)
 
 int	ft_cd(char **args, t_list *env)
 {
-	int		cd_ret;
+	int	cd_ret;
 
 	if (!args[1])
 		return (EXIT_FAILURE);
