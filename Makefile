@@ -13,9 +13,10 @@ LIBFT = libft/libft.a
 MAKE = make --no-print-directory
 
 SRCS = main.c
-SRCS += $(addprefix execution/, \
+SRCS += $(addprefix execution/builtins/, \
 		echo.c pwd.c cd.c env.c env_utils.c \
-		export.c unset.c exit.c utils.c)
+		export.c unset.c exit.c) 
+SRCS +=	$(addprefix execution/, utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c \
 		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \
