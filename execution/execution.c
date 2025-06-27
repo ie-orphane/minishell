@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:40:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/06/26 19:37:30 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/06/27 10:43:04 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int	is_builtin_cmd(char **args)
 		return (0);
 	return (ft_strcmp(args[0], "echo") == 0 || ft_strcmp(args[0], "pwd") == 0
 		|| ft_strcmp(args[0], "cd") == 0 || ft_strcmp(args[0], "export") == 0
-		|| ft_strcmp(args[0], "unset") == 0 || ft_strcmp(args[0], "env") == 0);
+		|| ft_strcmp(args[0], "unset") == 0 || ft_strcmp(args[0], "env") == 0
+		|| ft_strcmp(args[0], "exit") == 0);
 }
+
 void	exec_builtin(char **args, t_list **env)
 {
 	if (ft_strcmp(*args, "echo") == 0)
@@ -34,8 +36,8 @@ void	exec_builtin(char **args, t_list **env)
 		ft_unset(args + 1, env);
 	else if (ft_strcmp(*args, "env") == 0)
 		ft_env(*env);
-	// else if (ft_strcmp(*args, "exit") == 0)
-	// 	ft_exit(args, env, lst, line);
+	else if (ft_strcmp(*args, "exit") == 0)
+		ft_exit(args, env);
 }
 
 void	ft_exec(t_list *lst, t_list **env)

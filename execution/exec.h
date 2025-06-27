@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/06/26 19:29:43 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/06/27 10:39:40 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <signal.h>
 # include <stdio.h>
 # include <string.h>
-# include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
@@ -49,14 +49,14 @@ int			ft_env(t_list *env);
 int			ft_cd(char **args, t_list *env);
 int			ft_export(char **args, t_list **env);
 int			ft_unset(char **args, t_list **env);
-int			ft_exit(char **args, t_list **env, t_list **lst, char **line);
-// int			ft_exit(char **args, t_list **env);
+int			ft_exit(char **args, t_list **env);
+// int			ft_exit(char **args, t_list **env, t_list **lst, char **line);
 
 // Pipe execution
-void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
-void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
-void	exec_pipe(t_list *lst, t_list **env);
-void	execute_cmd(char **args);
+void		first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
+void		second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
+void		exec_pipe(t_list *lst, t_list **env);
+void		execute_cmd(char **args);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);
