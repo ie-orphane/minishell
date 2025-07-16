@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/06/27 10:39:40 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/15 10:15:20 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define EXIT_FAILURE 1
 # define STDERR 2
 
+extern int	g_exit_status;
+
 typedef struct s_env
 {
 	char	*key;
@@ -35,12 +37,13 @@ typedef struct s_env
 typedef struct s_shell
 {
 	t_list	*env;
+	int		exit_status;
 }			t_shell;
 
 void		ft_exec(t_list *lst, t_list **env);
 void		exec_builtin(char **args, t_list **env);
 int			is_builtin_cmd(char **args);
-int			ft_execvpe(char *file, char **argv, t_list *env);
+int			ft_execvpe(char *file, char **argv, t_list **env);
 
 // Built-ins
 int			ft_echo(char **args);
@@ -56,7 +59,7 @@ int			ft_exit(char **args, t_list **env);
 void		first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
 void		second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env);
 void		exec_pipe(t_list *lst, t_list **env);
-void		execute_cmd(char **args);
+void		execute_cmd(char **args, t_list **env);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);
@@ -65,6 +68,8 @@ void		env_free(void *content);
 char		*env_get(t_list *env, char *key);
 void		env_set(t_list **env, char *key, char *value);
 void		env_del(t_list **env, char *key);
+char		**env_to_array(t_list *env);
+void		update_exit_status(int status);
 
 // Utilities
 void		ft_putendl(char *s);

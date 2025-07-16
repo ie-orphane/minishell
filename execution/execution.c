@@ -6,11 +6,19 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:40:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/06/27 10:43:04 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/16 11:33:39 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+void	update_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+}
 
 int	is_builtin_cmd(char **args)
 {
@@ -50,5 +58,5 @@ void	ft_exec(t_list *lst, t_list **env)
 	else if (lst->next)
 		exec_pipe(lst, env);
 	else
-		execute_cmd(args);
+		execute_cmd(args, env);
 }
