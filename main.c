@@ -6,11 +6,13 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:57:25 by mbentale          #+#    #+#             */
-/*   Updated: 2025/06/26 19:37:24 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/15 09:58:49 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+int	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
