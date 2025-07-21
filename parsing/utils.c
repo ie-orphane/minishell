@@ -23,6 +23,8 @@ char	*env_key(char *str)
 	char	*key;
 
 	i = 1;
+	if (ft_strncmp(str, "$?", 2) == 0)
+		return (ft_strdup("$?"));
 	while (str[i] && ft_isalnum(str[i]))
 		i++;
 	key = ft_substr(str, 0, i);
@@ -33,8 +35,10 @@ char	*env_value(char *key)
 {
 	char	*value;
 
+	if (ft_strcmp(key, "$?") == 0)
+		return (ft_itoa(g_exit_status));
 	value = getenv(key + 1);
 	if (!value)
 		value = "";
-	return (value);
+	return (ft_strdup(value));
 }

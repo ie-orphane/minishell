@@ -6,40 +6,11 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:25:13 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 09:50:04 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:58:39 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-char	*__expand(char *str)
-{
-	int		c[4];
-	char	*strs[4];
-
-	ft_bzero(c, sizeof(c));
-	while (str[c[0]])
-	{
-		if (!c[2] && ft_isquote(str + c[0]))
-			c[3] = str[c[0]];
-		if (!(c[2] && c[3] == '\'') && str[c[0]] == '$')
-		{
-			strs[2] = env_key(str + c[0]);
-			if (ft_strlen(strs[2]) == 1)
-				return (free(strs[2]), str);
-			strs[3] = env_value(strs[2]);
-			strs[1] = str;
-			str = ft_strreplace(str, strs[2], strs[3], c[0]);
-			c[0] += ft_strlen(strs[3]) - 1;
-			free(strs[1]);
-			free(strs[2]);
-		}
-		c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
-		c[3] *= c[2];
-		c[0]++;
-	}
-	return (str);
-}
 
 t_list	*ft_spell(const char *str)
 {
@@ -104,7 +75,7 @@ t_list	*ft_identify(t_list *lst)
 	return (new);
 }
 
-void	__trim(t_cmd *prev, t_cmd *cmd)
+static void	__trim(t_cmd *prev, t_cmd *cmd)
 {
 	int		c[5];
 	char	*s[3];
@@ -151,7 +122,7 @@ void	ft_lstexpand(t_list **lst)
 	{
 		cmd = tmp->content;
 		if (!prev || prev->type != T_HER_DOC)
-			cmd->value = __expand(cmd->value);
+			cmd->value = expand(cmd->value);
 		if (prev && (prev->type == T_APPEND || prev->type == T_OUTPUT
 				|| prev->type == T_INPUT) && (ft_strlen(cmd->value) == 0
 				|| ft_strchr(cmd->value, ' ')))

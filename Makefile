@@ -18,7 +18,7 @@ SRCS += $(addprefix execution/builtins/, \
 		export.c unset.c exit.c)
 SRCS +=	$(addprefix execution/, execution.c exec_pipe.c execvpe.c utils.c)
 SRCS += $(addprefix parsing/, \
-		ft_parse.c ft_parse_utils.c \
+		ft_parse.c ft_parse_utils.c ft_fill.c \
 		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \
 		get_next_line.c ft_putstr_non_printable.c \
 		ft_strrand.c)
@@ -30,7 +30,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 IFLAGS = -Iexecution -Iparsing -Ilibft -I.
-LFLAGS = -lreadline -Llibft -lft #-fsanitize=address
+LFLAGS = -lreadline -Llibft -lft -fsanitize=address
 
 all : $(NAME)
 

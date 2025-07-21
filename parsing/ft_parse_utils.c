@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:04:50 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 11:26:51 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:59:35 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,129 +59,44 @@ t_list	*ft_lstsplit(t_list *lst)
 	return (new);
 }
 
-static char	*herdoc(t_cmd *cmd)
+t_data	*ft_data_new(char **args, char **redirs)
 {
-	char	*doc;
-	char	*line;
-	char	*tmp;
+	t_data	*data;
 
-	if (fork() != 0)
-	{
-		doc = ft_strdup("");
-		while (true)
-		{
-			ft_putstrs_fd((char *[]){BLACK, cmd->value, "> ", RESET, NULL}, 1);
-			line = get_next_line(0);
-			tmp = ft_strtrim(line, "\n");
-			if (!line || ft_strcmp(tmp, cmd->value) == 0)
-				return (free(tmp), get_next_line(-1), free(line), doc);
-			free(tmp);
-			if (cmd->type != T_STRING)
-				line = __expand(line);
-			tmp = doc;
-			doc = ft_strjoin(doc, line);
-			free(line);
-			free(tmp);
-		}
-	}
-	wait(NULL);
-	return (NULL);
-}
-
-static char	*redirection(t_list *node)
-{
-	bool	isherdoc;
-	char	*doc;
-	t_cmd	*cmd;
-	char	*tmp;
-	char	*path;
-	int		fd;
-
-	if (!node->next)
-	{
-		ft_error("SyntaxError", "Unexpected token 'newline'");
+	data = malloc(sizeof(t_data));
+	if (!data)
 		return (NULL);
-	}
-	isherdoc = ((t_cmd *)node->content)->type == T_HER_DOC;
-	cmd = node->next->content;
-	if (cmd->type == T_PIPE || ft_cmdis_redir(cmd) || ft_strcmp(cmd->value,
-			"\n") == 0)
-	{
-		tmp = ft_strreplace("Unexpected token '%s'", "%s", cmd->value, 0);
-		ft_error("SyntaxError", tmp);
-		return (free(tmp), NULL);
-	}
-	if (isherdoc)
-	{
-		doc = herdoc(cmd);
-		if (doc)
-		{
-			tmp = ft_strrand(7);
-			path = ft_strjoin("/tmp/", tmp);
-			free(tmp);
-			fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			ft_putstr_fd(doc, fd);
-			return (close(fd), free(doc), path);
-		}
-	}
-	else
-	{
-		return (ft_strdup(cmd->value));
-	}
-	return (NULL);
+	data->args = args;
+	data->redirs = redirs;
+	return (data);
 }
 
-t_list	*ft_fill(t_list *__lst)
+char	*expand(char *str)
 {
-	char	**arr;
-	char	**redirs;
-	t_list	*lst;
-	t_list	*node;
-	char	*content;
-	char	*tmp;
+	int		c[4];
+	char	*strs[4];
 
-	node = __lst;
-	arr = NULL;
-	redirs = NULL;
-	lst = NULL;
-	t_data *data;
-	while (node)
+	ft_bzero(c, sizeof(c));
+	while (str[c[0]])
 	{
-		content = ((t_cmd *)node->content)->value;
-		if (((t_cmd *)node->content)->type == T_PIPE && !arr)
+		if (!c[2] && ft_isquote(str + c[0]))
+			c[3] = str[c[0]];
+		if (!(c[2] && c[3] == '\'') && str[c[0]] == '$')
 		{
-			ft_error("SyntaxError", "Unexpected token '|'");
-			break ;
+			strs[2] = env_key(str + c[0]);
+			if (ft_strlen(strs[2]) == 1)
+				return (free(strs[2]), str);
+			strs[3] = env_value(strs[2]);
+			strs[1] = str;
+			str = ft_strreplace(str, strs[2], strs[3], c[0]);
+			c[0] += ft_strlen(strs[3]) - 1;
+			free(strs[1]);
+			free(strs[2]);
+			free(strs[3]);
 		}
-		if (((t_cmd *)node->content)->type == T_PIPE)
-		{
-			data = malloc(sizeof(t_data ));
-			data->args = arr;
-			data->redirs = redirs;
-			ft_lstadd_back(&lst, ft_lstnew(data));
-			arr = NULL;
-			redirs = NULL;
-		}
-		else if (ft_cmdis_redir((t_cmd *)node->content))
-		{
-			tmp = redirection(node);
-			if (tmp == NULL)
-				exit(0);
-			redirs = ft_strsadd(redirs,
-					ft_strdup(((t_cmd *)node->content)->value));
-			redirs = ft_strsadd(redirs, ft_strdup(tmp));
-			node = node->next;
-		}
-		else
-			arr = ft_strsadd(arr, ft_strdup(content));
-		node = node->next;
+		c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
+		c[3] *= c[2];
+		c[0]++;
 	}
-	if (arr)
-	{
-		data = malloc(sizeof(t_data));
-		data->args = arr;
-		data->redirs = redirs;
-		ft_lstadd_back(&lst, ft_lstnew(data));
-	}
-	return (lst);
+	return (str);
 }

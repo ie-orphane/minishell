@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:48:05 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/25 11:42:12 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:57:50 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_export(char **args, t_list **env)
 		else
 		{
 			key = ft_substr(*args, 0, ft_strchr(*args, '=') - *args);
-			value = __expand(ft_strdup(ft_strchr(*args, '=') + 1));
+			value = expand(ft_strdup(ft_strchr(*args, '=') + 1));
 		}
 		if (!__isvalid_key(key))
 		{

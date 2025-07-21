@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:32:25 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 11:16:40 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 14:57:50 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_cmd
 	t_type	type;
 	char	*value;
 }			t_cmd;
+
+extern int	g_exit_status;
 
 typedef struct s_data
 {
@@ -77,11 +79,12 @@ void		ft_error(char *type, char *err);
 // ft_parse_utils.c
 // ft_parse.c
 // -----------------------------------
-char		*__expand(char *str);
+char		*expand(char *str);
 t_list		*ft_lstsplit(t_list *lst);
 t_list		*ft_fill(t_list *__lst);
 t_list		*ft_spell(const char *str);
 t_list		*ft_identify(t_list *lst);
+t_data		*ft_data_new(char **args, char **redirs);
 
 t_list		*ft_parse(char *line);
 
