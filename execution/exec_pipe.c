@@ -6,38 +6,12 @@
 /*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:24:24 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 16:51:47 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/07/21 18:26:48 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	child_exec(t_data *data, t_list **env, int in_fd, int out_fd)
-{
-	if (handle_redirections(data->redirs) < 0)
-	{
-		perror("redirection error");
-		exit(EXIT_FAILURE);
-	}
-	if (in_fd != STDIN_FILENO)
-	{
-		dup2(in_fd, STDIN_FILENO);
-		close(in_fd);
-	}
-	if (out_fd != STDOUT_FILENO)
-	{
-		dup2(out_fd, STDOUT_FILENO);
-		close(out_fd);
-	}
-	if (is_builtin_cmd(data->args))
-	{
-		exec_builtin(data->args, env);
-		exit(EXIT_SUCCESS);
-	}
-	ft_execvpe(data->args[0], data->args, env);
-	perror("larrysh");
-	exit(EXIT_FAILURE);
-}
 
 static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 {
@@ -45,8 +19,20 @@ static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 	
 	data = lst->content;
 	*pid = fork();
-	if (*pid == 0)
-		child_exec(data, env, STDIN_FILENO, fd[1]);
+    if (*pid == 0)
+    {
+        close(fd[0]);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[1]);
+        if (is_builtin_cmd(data->args))
+        {
+            exec_builtin(data->args, env);
+            exit(EXIT_SUCCESS);
+        }
+        ft_execvpe(data->args[0], data->args, env);
+        perror("larrysh");
+        exit(EXIT_FAILURE);
+	}
 }
 
 static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
@@ -55,14 +41,33 @@ static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 	
 	data = lst->content;
 	*pid = fork();
-	if (*pid == 0)
-	{
-		if (lst->next)
-			exec_pipe(lst->next, env);
-		else
-			child_exec(data, env, fd[0], STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
-	}
+    if (*pid == 0)
+    {
+        if (handle_redirections(data->redirs) < 0)
+        {
+            perror("redirection error");
+            exit(EXIT_FAILURE);
+        }
+        close(fd[1]);
+        dup2(fd[0], STDIN_FILENO);
+        close(fd[0]);
+        if (lst->next)
+        {
+            exec_pipe(lst, env);
+            exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            if (is_builtin_cmd(data->args))
+            {
+                exec_builtin(data->args, env);
+                exit(EXIT_SUCCESS);
+            }
+            ft_execvpe(data->args[0], data->args, env);
+            perror("larrysh");
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 void	exec_pipe(t_list *lst, t_list **env)
