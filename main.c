@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:57:25 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 11:26:24 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:48:58 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	ft_dataclear(void *__data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
-	t_list	*lst;
-	t_list	*env;
+	char		*line;
+	t_list		*lst;
+	t_list		*env;
 
 	(void)argc;
 	(void)argv;
@@ -42,11 +42,10 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(line);
 		lst = ft_parse(line);
-		if (!lst || !lst->content)
+		if (!lst)
 			continue ;
 		ft_exec(lst, &env);
 		ft_lstclear(&lst, ft_dataclear);
-		break ;
 	}
 	ft_lstclear(&env, env_free);
 }

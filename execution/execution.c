@@ -3,60 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:40:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/16 11:33:39 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/21 16:04:58 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	update_exit_status(int status)
-{
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		g_exit_status = 128 + WTERMSIG(status);
-}
-
-int	is_builtin_cmd(char **args)
-{
-	if (!args || !args[0])
-		return (0);
-	return (ft_strcmp(args[0], "echo") == 0 || ft_strcmp(args[0], "pwd") == 0
-		|| ft_strcmp(args[0], "cd") == 0 || ft_strcmp(args[0], "export") == 0
-		|| ft_strcmp(args[0], "unset") == 0 || ft_strcmp(args[0], "env") == 0
-		|| ft_strcmp(args[0], "exit") == 0);
-}
-
-void	exec_builtin(char **args, t_list **env)
-{
-	if (ft_strcmp(*args, "echo") == 0)
-		ft_echo(args);
-	else if (ft_strcmp(*args, "pwd") == 0)
-		ft_pwd();
-	else if (ft_strcmp(*args, "cd") == 0)
-		ft_cd(args, *env);
-	else if (ft_strcmp(*args, "export") == 0)
-		ft_export(args + 1, env);
-	else if (ft_strcmp(*args, "unset") == 0)
-		ft_unset(args + 1, env);
-	else if (ft_strcmp(*args, "env") == 0)
-		ft_env(*env);
-	else if (ft_strcmp(*args, "exit") == 0)
-		ft_exit(args, env);
-}
-
 void	ft_exec(t_list *lst, t_list **env)
 {
-	char	**args;
+	t_data	*data;
+	
 
-	args = lst->content;
-	if (!lst->next && is_builtin_cmd(args))
-		exec_builtin(args, env);
+	data = lst->content;
+	if (!lst->next && is_builtin_cmd(data->args))
+	{
+		if (data->redirs && data->redirs[0])
+		{
+			exec_with_redir(data, env, true);
+		}
+		else
+			exec_builtin(data->args, env);
+	}
 	else if (lst->next)
 		exec_pipe(lst, env);
 	else
-		execute_cmd(args, env);
+	{
+		if (data->redirs && data->redirs[0])
+			exec_with_redir(data, env, false);
+		else
+			execute_cmd(data->args, env);
+	}
 }
