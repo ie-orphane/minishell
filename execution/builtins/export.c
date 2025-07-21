@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:48:05 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 14:57:50 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:24:01 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-bool	__isvalid_key(char *str)
+static bool	isvalid_key(char *str)
 {
 	if (!*str || ft_isdigit(*str))
 		return (false);
@@ -25,12 +25,26 @@ bool	__isvalid_key(char *str)
 	return (true);
 }
 
-static void	__show(t_env *env)
+static void	show_export(t_env *env)
 {
 	printf("declare -x %s", env->key);
 	if (env->value)
 		printf("=\"%s\"", env->value);
 	printf("\n");
+}
+
+static void	set_key_value(char **args, char **key, char **value)
+{
+	if (!ft_strchr(*args, '='))
+	{
+		*key = ft_strdup(*args);
+		*value = NULL;
+	}
+	else
+	{
+		*key = ft_substr(*args, 0, ft_strchr(*args, '=') - *args);
+		*value = expand(ft_strdup(ft_strchr(*args, '=') + 1));
+	}
 }
 
 int	ft_export(char **args, t_list **env)
@@ -41,20 +55,11 @@ int	ft_export(char **args, t_list **env)
 
 	status = 0;
 	if (!*args)
-		ft_lstiter(*env, __show);
+		ft_lstiter(*env, show_export);
 	while (*args)
 	{
-		if (!ft_strchr(*args, '='))
-		{
-			key = ft_strdup(*args);
-			value = NULL;
-		}
-		else
-		{
-			key = ft_substr(*args, 0, ft_strchr(*args, '=') - *args);
-			value = expand(ft_strdup(ft_strchr(*args, '=') + 1));
-		}
-		if (!__isvalid_key(key))
+		set_key_value(args, &key, &value);
+		if (!isvalid_key(key))
 		{
 			status = 1;
 			free(key);

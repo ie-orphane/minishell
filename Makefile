@@ -16,7 +16,7 @@ SRCS = main.c
 SRCS += $(addprefix execution/builtins/, \
 		echo.c pwd.c cd.c env.c env_utils.c \
 		export.c unset.c exit.c)
-SRCS +=	$(addprefix execution/, execution.c execution_utils.c exec_pipe.c execvpe.c redirection.c)
+SRCS +=	$(addprefix execution/, execution.c execution_utils.c exec_pipe.c execvpe.c redirection.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c ft_fill.c \
 		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \

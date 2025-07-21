@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:17:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/25 11:21:34 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:32:31 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,31 +116,35 @@ void	env_set(t_list **env, char *key, char *value)
 }
 
 /**
- * @brief Removes an ENV_VAR by its key from the linked list.
+ * @brief Initializes the ENV_VARs from the provided array.
  *
- * @param env The linked list of ENV_VARs.
- * @param key The key of the ENV_VAR to remove.
+ * ```c
+ * // Example usage:
+ * char *env[] = {"KEY1=VALUE1", "KEY2=VALUE2", NULL};
+ * t_list *env_list = env_init(env);
+ * ```
+ *
+ * @param env The array of ENV_VARs.
+ *
+ * @return A linked list of ENV_VAR nodes.
  */
-void	env_del(t_list **env, char *key)
+t_list	*env_init(char **__env)
 {
-	t_list	*node;
-	t_list	*prev;
+	int		pos;
+	char	*key;
+	char	*value;
+	t_list	*env;
+	size_t	i;
 
-	node = *env;
-	prev = NULL;
-	while (node)
+	env = NULL;
+	i = 0;
+	while (__env[i])
 	{
-		if (ft_strcmp(((t_env *)node->content)->key, key) == 0)
-		{
-			if (prev)
-				prev->next = node->next;
-			else
-				*env = node->next;
-			env_free(node->content);
-			free(node);
-			return ;
-		}
-		prev = node;
-		node = node->next;
+		pos = ft_strchr(__env[i], '=') - __env[i];
+		key = ft_substr(__env[i], 0, pos);
+		value = ft_substr(__env[i], pos + 1, ft_strlen(__env[i]) - pos);
+		ft_lstadd_back(&env, ft_lstnew(env_new(key, value)));
+		i++;
 	}
+	return (env);
 }

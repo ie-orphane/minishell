@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:57:25 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 16:48:58 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/07/21 19:09:19 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		lst = ft_parse(line);
 		if (!lst)
+		{
+			free(line);
 			continue ;
+		}
 		ft_exec(lst, &env);
 		ft_lstclear(&lst, ft_dataclear);
+		free(line);
 	}
 	ft_lstclear(&env, env_free);
 }

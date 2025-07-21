@@ -6,15 +6,15 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:28:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/16 11:34:16 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:29:39 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int is_executable(char *path)
+static int	is_executable(char *path)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (access(path, X_OK) != 0)
 		return (0);
@@ -23,9 +23,9 @@ static int is_executable(char *path)
 	return (S_ISREG(st.st_mode));
 }
 
-static char *join_path(const char *dir, const char *file)
+static char	*join_path(const char *dir, const char *file)
 {
-	char *res;
+	char	*res;
 
 	res = malloc(ft_strlen(dir) + ft_strlen(file) + 2);
 	if (!res)
@@ -36,61 +36,10 @@ static char *join_path(const char *dir, const char *file)
 	return (res);
 }
 
-static char *build_key_value(t_env *env)
+static void	set_path(char **paths, char *file, char **argv, char **envp)
 {
-	char *joined;
-
-	joined = malloc(ft_strlen(env->key) + ft_strlen(env->value) + 2);
-	if (!joined)
-		return (NULL);
-	ft_strlcpy(joined, env->key, ft_strlen(env->key) + 1);
-	joined[ft_strlen(env->key)] = '=';
-	ft_strlcpy(joined + ft_strlen(env->key) + 1, env->value, ft_strlen(env->value) + 1);
-	return (joined);
-}
-
-char **env_to_array(t_list *env)
-{
-	char **arr;
-	int i;
-	t_list *tmp;
-	char *joined;
-
-	tmp = env;
-	i = 0;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	arr = malloc(sizeof(char *) * (i + 1));
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (env)
-	{
-		joined = build_key_value((t_env *)env->content);
-		arr[i++] = joined;
-		env = env->next;
-	}
-	arr[i] = NULL;
-	return (arr);
-}
-
-void free_2d(char **arr)
-{
-	int i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
-
-static void set_path(char **paths, char *file, char **argv, char **envp)
-{
-	char *full_path;
-	int i;
+	char	*full_path;
+	int		i;
 
 	i = -1;
 	while (paths[++i])
@@ -105,11 +54,11 @@ static void set_path(char **paths, char *file, char **argv, char **envp)
 	}
 }
 
-int ft_execvpe(char *file, char **argv, t_list **env)
+int	ft_execvpe(char *file, char **argv, t_list **env)
 {
-	char *path_env;
-	char **paths;
-	char **envp;
+	char	*path_env;
+	char	**paths;
+	char	**envp;
 
 	envp = env_to_array(*env);
 	if (!envp)

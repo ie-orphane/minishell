@@ -58,19 +58,19 @@ void	execute_cmd(char **args, t_list **env)
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
-	update_exit_status(status); 
+	update_exit_status(status);
 }
 
-void exec_with_redir(t_data *data, t_list **env, bool is_builtin)
+void	exec_with_redir(t_data *data, t_list **env, bool is_builtin)
 {
-	pid_t pid;
-	int  status;
+	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork");
-		return;
+		return ;
 	}
 	if (pid == 0)
 	{

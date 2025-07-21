@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:40:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 16:04:58 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/07/21 19:06:17 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_exec(t_list *lst, t_list **env)
 {
 	t_data	*data;
-	
 
 	data = lst->content;
 	if (!lst->next && is_builtin_cmd(data->args))

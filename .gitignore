@@ -2,3 +2,4 @@ minishell
 *.[ao]
 test*
 .vscode/
+*.txt
