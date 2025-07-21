@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:04:50 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/28 10:15:01 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:26:51 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,17 @@ static char	*redirection(t_list *node)
 			return (close(fd), free(doc), path);
 		}
 	}
-	return (0);
+	else
+	{
+		return (ft_strdup(cmd->value));
+	}
+	return (NULL);
 }
 
 t_list	*ft_fill(t_list *__lst)
 {
 	char	**arr;
+	char	**redirs;
 	t_list	*lst;
 	t_list	*node;
 	char	*content;
@@ -137,7 +142,9 @@ t_list	*ft_fill(t_list *__lst)
 
 	node = __lst;
 	arr = NULL;
+	redirs = NULL;
 	lst = NULL;
+	t_data *data;
 	while (node)
 	{
 		content = ((t_cmd *)node->content)->value;
@@ -148,16 +155,21 @@ t_list	*ft_fill(t_list *__lst)
 		}
 		if (((t_cmd *)node->content)->type == T_PIPE)
 		{
-			ft_lstadd_back(&lst, ft_lstnew(arr));
+			data = malloc(sizeof(t_data ));
+			data->args = arr;
+			data->redirs = redirs;
+			ft_lstadd_back(&lst, ft_lstnew(data));
 			arr = NULL;
+			redirs = NULL;
 		}
 		else if (ft_cmdis_redir((t_cmd *)node->content))
 		{
 			tmp = redirection(node);
 			if (tmp == NULL)
 				exit(0);
-			free(((t_cmd *)node->next->content)->value);
-			((t_cmd *)node->next->content)->value = tmp;
+			redirs = ft_strsadd(redirs,
+					ft_strdup(((t_cmd *)node->content)->value));
+			redirs = ft_strsadd(redirs, ft_strdup(tmp));
 			node = node->next;
 		}
 		else
@@ -165,7 +177,11 @@ t_list	*ft_fill(t_list *__lst)
 		node = node->next;
 	}
 	if (arr)
-		ft_lstadd_back(&lst, ft_lstnew(arr));
-	// ft_cmdshow(__lst);
+	{
+		data = malloc(sizeof(t_data));
+		data->args = arr;
+		data->redirs = redirs;
+		ft_lstadd_back(&lst, ft_lstnew(data));
+	}
 	return (lst);
 }

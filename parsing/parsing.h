@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:32:25 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/20 14:24:31 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:16:40 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ typedef struct s_cmd
 	t_type	type;
 	char	*value;
 }			t_cmd;
+
+typedef struct s_data
+{
+	char	**args;
+	char	**redirs;
+}			t_data;
 
 void		ft_putstrs_fd(char **s, int fd);
 
