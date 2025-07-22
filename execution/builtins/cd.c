@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:14:33 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/28 08:41:34 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:45:48 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 static void	print_cd_error(char **args)
 {
-	ft_putstr_fd("larrysh: cd: ", STDERR);
 	if (args[2])
-		ft_putendl_fd("too many arguments", STDERR);
+		ft_putendl_fd("larrysh: cd: too many arguments", STDERR);
 	else
+	{
+		ft_putstr_fd("larrysh: cd: ", STDERR);
+		ft_putstr_fd(args[1], STDERR);
+		ft_putstr_fd(": ", STDERR);
 		ft_putendl_fd(strerror(errno), STDERR);
+	}
 }
 
 static char	*update_path(t_list *env, char *key)
