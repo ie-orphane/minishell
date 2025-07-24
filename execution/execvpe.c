@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:28:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 19:29:39 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:59:21 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	is_executable(char *path)
 	return (S_ISREG(st.st_mode));
 }
 
-static char	*join_path(const char *dir, const char *file)
+char	*join_path(const char *dir, const char *file)
 {
 	char	*res;
 

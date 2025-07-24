@@ -6,7 +6,7 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 19:46:03 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:44:13 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ typedef struct s_env
 // Execution functions
 int			is_builtin_cmd(char **args);
 void		exec_builtin(char **args, t_list **env);
-void		execute_cmd(char **args, t_list **env);
 void		exec_pipe(t_list *lst, t_list **env);
-void		exec_with_redir(t_data *data, t_list **env, bool is_builtin);
 int			ft_execvpe(char *file, char **argv, t_list **env);
 void		ft_exec(t_list *lst, t_list **env);
 void		update_exit_status(int status);
 int			handle_redirections(char **args);
+bool		is_valid_command(char *cmd, t_list *env);
+char		*join_path(const char *dir, const char *file);
+void		perror_and_exit(const char *msg);
+void		print_error(char *cmd, char *msg);
 
 // Built-ins
 int			ft_echo(char **args);

@@ -6,35 +6,13 @@
 /*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:24:24 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 19:40:04 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:38:00 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
-{
-	t_data	*data;
-
-	data = lst->content;
-	*pid = fork();
-	if (*pid == 0)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		if (is_builtin_cmd(data->args))
-		{
-			exec_builtin(data->args, env);
-			exit(EXIT_SUCCESS);
-		}
-		ft_execvpe(data->args[0], data->args, env);
-		perror("larrysh");
-		exit(EXIT_FAILURE);
-	}
-}
-
-static void	perror_and_exit(const char *msg)
+void	perror_and_exit(const char *msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
@@ -48,7 +26,31 @@ static void	exec_and_exit(t_data **data, t_list **env)
 		exit(EXIT_SUCCESS);
 	}
 	ft_execvpe((*data)->args[0], (*data)->args, env);
-	perror_and_exit("larrysh");
+	perror("larrysh");
+	exit(EXIT_FAILURE);
+}
+
+static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
+{
+	t_data	*data;
+
+	data = lst->content;
+	*pid = fork();
+	if (*pid == 0)
+	{
+		if (!is_valid_command(data->args[0], *env)
+			&& !is_builtin_cmd(data->args))
+		{
+			print_error(data->args[0], "command not found");
+			exit(127);
+		}
+		if (handle_redirections(data->redirs) < 0)
+			perror_and_exit("larrysh: redirection error");
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		exec_and_exit(data, env);
+	}
 }
 
 static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
@@ -59,8 +61,14 @@ static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 	*pid = fork();
 	if (*pid == 0)
 	{
+		if (!is_valid_command(data->args[0], *env)
+			&& !is_builtin_cmd(data->args))
+		{
+			print_error(data->args[0], "command not found");
+			exit(127);
+		}
 		if (handle_redirections(data->redirs) < 0)
-			perror_and_exit("redirection error");
+			perror_and_exit("larrysh: redirection error");
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
