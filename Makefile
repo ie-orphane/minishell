@@ -20,8 +20,7 @@ SRCS +=	$(addprefix execution/, execution.c command_checks.c exec_pipe.c execvpe
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c ft_fill.c \
 		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \
-		get_next_line.c ft_putstr_non_printable.c \
-		ft_strrand.c)
+		get_next_line.c ft_strrand.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		execution/exec.h
@@ -30,7 +29,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 IFLAGS = -Iexecution -Iparsing -Ilibft -I.
-LFLAGS = -lreadline -Llibft -lft -fsanitize=address
+LFLAGS = -lreadline -Llibft -lft #-fsanitize=address
 
 all : $(NAME)
 

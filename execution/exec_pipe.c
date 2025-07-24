@@ -49,7 +49,7 @@ static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		exec_and_exit(data, env);
+		exec_and_exit(&data, env);
 	}
 }
 

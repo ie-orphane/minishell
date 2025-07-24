@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:57:25 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 19:09:19 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:04:52 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,24 @@ void	ft_dataclear(void *__data)
 	free(data);
 }
 
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	g_exit_status = 130;
+	rl_replace_line("", 0);
+	printf("\n" GREEN BOLD "larrysh> " RESET);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char		*line;
-	t_list		*lst;
-	t_list		*env;
+	char	*line;
+	t_list	*lst;
+	t_list	*env;
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	env = env_init(envp);
 	while (true)
 	{
@@ -42,14 +52,15 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(line);
 		lst = ft_parse(line);
-		if (!lst)
+		if (!lst || !lst->content)
 		{
 			free(line);
 			continue ;
 		}
-		ft_exec(lst, &env);
+		if (((t_data *)lst->content)->args)
+			ft_exec(lst, &env);
 		ft_lstclear(&lst, ft_dataclear);
-		free(line);
 	}
+	printf("exit\n");
 	ft_lstclear(&env, env_free);
 }
