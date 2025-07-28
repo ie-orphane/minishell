@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "main.h"
 
 void	exec_builtin(char **args, t_list **env)
 {
@@ -35,9 +35,12 @@ static void	execute_cmd(char **args, t_list **env)
 	pid_t	pid;
 	int		status;
 
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
 		if (!is_valid_command(args[0], *env))
 		{
 			print_error(args[0], "command not found");
@@ -51,6 +54,8 @@ static void	execute_cmd(char **args, t_list **env)
 	}
 	waitpid(pid, &status, 0);
 	update_exit_status(status);
+	signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, sigint_handler);
 }
 
 static void	child_process(t_data *data, t_list **env, bool is_builtin)
