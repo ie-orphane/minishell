@@ -3,14 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:29:40 by mb11junior        #+#    #+#             */
-/*   Updated: 2025/07/21 19:15:28 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:15:15 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+bool	has_output_redirection(char **redirs)
+{
+	int	i;
+
+	if (!redirs)
+		return (false);
+	i = 0;
+	while (redirs[i])
+	{
+		if (!ft_strcmp(redirs[i], ">") || !ft_strcmp(redirs[i], ">>"))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+bool	has_input_redirection(char **redirs)
+{
+	int	i;
+
+	if (!redirs)
+		return (false);
+	i = 0;
+	while (redirs[i])
+	{
+		if (!ft_strcmp(redirs[i], "<") || !ft_strcmp(redirs[i], "<<"))
+			return (true);
+		i++;
+	}
+	return (false);
+}
 
 static int	handle_input(char *file)
 {

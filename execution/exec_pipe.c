@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:24:24 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/24 10:38:00 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:18:20 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 		if (handle_redirections(data->redirs) < 0)
 			perror_and_exit("larrysh: redirection error");
 		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
+		if (!has_output_redirection(data->redirs))
+			dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		exec_and_exit(&data, env);
 	}
@@ -70,7 +71,8 @@ static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 		if (handle_redirections(data->redirs) < 0)
 			perror_and_exit("larrysh: redirection error");
 		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
+		if (!has_input_redirection(data->redirs))
+			dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		if (lst->next)
 		{

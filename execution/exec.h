@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/24 09:44:13 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/28 19:15:50 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ bool		is_valid_command(char *cmd, t_list *env);
 char		*join_path(const char *dir, const char *file);
 void		perror_and_exit(const char *msg);
 void		print_error(char *cmd, char *msg);
+bool		has_output_redirection(char **redirs);
+bool		has_input_redirection(char **redirs);
 
 // Built-ins
 int			ft_echo(char **args);
