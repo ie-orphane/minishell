@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "main.h"
 
 static void	__split(char *str, int (*c)[4], int *b, t_list **new)
 {
@@ -59,18 +59,6 @@ t_list	*ft_lstsplit(t_list *lst)
 	return (new);
 }
 
-t_data	*ft_data_new(char **args, char **redirs)
-{
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (NULL);
-	data->args = args;
-	data->redirs = redirs;
-	return (data);
-}
-
 char	*expand(char *str)
 {
 	int		c[4];
@@ -84,8 +72,6 @@ char	*expand(char *str)
 		if (!(c[2] && c[3] == '\'') && str[c[0]] == '$')
 		{
 			strs[2] = env_key(str + c[0]);
-			if (ft_strlen(strs[2]) == 1)
-				return (free(strs[2]), str);
 			strs[3] = env_value(strs[2]);
 			strs[1] = str;
 			str = ft_strreplace(str, strs[2], strs[3], c[0]);
@@ -94,9 +80,39 @@ char	*expand(char *str)
 			free(strs[2]);
 			free(strs[3]);
 		}
-		c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
+		if (c[0] >= 0)
+			c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
 		c[3] *= c[2];
 		c[0]++;
 	}
 	return (str);
+}
+
+t_list	*ft_spell(const char *str)
+{
+	int		c[4];
+	t_list	*lst;
+
+	ft_bzero(c, sizeof(c));
+	lst = NULL;
+	while (str[c[0]] != '\0')
+	{
+		if (str[c[0]] != ' ')
+		{
+			c[1] = 0;
+			while (str[c[0]] != '\0' && (str[c[0]] != ' ' || c[2]))
+			{
+				if (!c[2] && ft_isquote(str + c[0]))
+					c[3] = str[c[0]];
+				c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
+				c[3] *= c[2];
+				c[0]++;
+				c[1]++;
+			}
+			ft_lstadd_back(&lst, ft_lstnew(ft_substr(str, c[0] - c[1], c[1])));
+		}
+		if (str[c[0]] != '\0')
+			c[0]++;
+	}
+	return (lst);
 }

@@ -28,8 +28,6 @@
 # define EXIT_FAILURE 1
 # define STDERR 2
 
-extern int	g_exit_status;
-
 typedef struct s_env
 {
 	char	*key;
@@ -38,10 +36,10 @@ typedef struct s_env
 
 // Execution functions
 int			is_builtin_cmd(char **args);
-void		exec_builtin(char **args, t_list **env);
+void		exec_builtin(t_list **lst, t_list **env);
 void		exec_pipe(t_list *lst, t_list **env);
 int			ft_execvpe(char *file, char **argv, t_list **env);
-void		ft_exec(t_list *lst, t_list **env);
+void		ft_exec(t_list **lst, t_list **env);
 void		update_exit_status(int status);
 int			handle_redirections(char **args);
 bool		is_valid_command(char *cmd, t_list *env);
@@ -58,7 +56,7 @@ int			ft_env(t_list *env);
 int			ft_cd(char **args, t_list *env);
 int			ft_export(char **args, t_list **env);
 int			ft_unset(char **args, t_list **env);
-int			ft_exit(char **args, t_list **env);
+int			ft_exit(t_list **lst, t_list **env);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);

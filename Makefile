@@ -19,8 +19,8 @@ SRCS += $(addprefix execution/builtins/, \
 SRCS +=	$(addprefix execution/, execution.c command_checks.c exec_pipe.c execvpe.c redirection.c utils.c)
 SRCS += $(addprefix parsing/, \
 		ft_parse.c ft_parse_utils.c ft_fill.c \
-		ft_isx.c utils.c ft_cmd.c ft_putstrs_fd.c \
-		get_next_line.c ft_strrand.c)
+		ft_isx.c utils.c ft_cmd.c ft_data.c \
+		ft_strrand.c signal.c)
 OBJS = $(SRCS:.c=.o)
 INCS = main.h parsing/parsing.h \
 		execution/exec.h
@@ -29,7 +29,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 IFLAGS = -Iexecution -Iparsing -Ilibft -I.
-LFLAGS = -lreadline -Llibft -lft #-fsanitize=address
+LFLAGS = -lreadline -Llibft -lft #-fsanitize=address,undefined
 
 all : $(NAME)
 
@@ -52,6 +52,9 @@ fclean : clean
 	@find . -type f -name "$(NAME)" -printf "🧹 $(BLACK)%f$(RESET)\n" -delete
 
 re : fclean all
+
+val: $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./$<
 
 run: $(NAME)
 	@./$<

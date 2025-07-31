@@ -31,9 +31,9 @@ static char	*update_path(t_list *env, char *key)
 	return (((t_env *)env->content)->value);
 }
 
-int ft_strslen(char **s)
+int	ft_strslen(char **s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -51,7 +51,7 @@ int	ft_cd(char **args, t_list *env)
 		ft_putendl_fd("larrysh: cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
-	if (!args[1])
+	if (ft_strslen(args) == 1)
 	{
 		path_value = env_get(env, "HOME");
 		if (!path_value)

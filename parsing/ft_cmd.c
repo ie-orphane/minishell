@@ -17,21 +17,31 @@ int	ft_cmdcmp_type(t_cmd *ref, t_cmd *cmd)
 	return (cmd->type != ref->type);
 }
 
-void	ft_cmdshow(t_list *lst)
+t_cmd	*ft_cmdnew(char *value)
 {
-	const char	*types[] = {[T_PIPE] = "PIPE", [T_HER_DOC] = "HER_DOC",
-	[T_APPEND] = "APPEND", [T_INPUT] = "INPUT", [T_STRING] = "STRING",
-	[T_OUTPUT] = "OUTPUT", [T_ARG] = "ARG", [T_EMPTY] = "EMPTY",
-	[T_NONE] = "NONE", [T_NULL] = "NULL"};
+	t_cmd	*cmd;
+	t_type	type;
 
-	printf("{\n");
-	while (lst)
-	{
-		printf("  %s: %s,\n", types[((t_cmd *)lst->content)->type],
-			((t_cmd *)lst->content)->value);
-		lst = lst->next;
-	}
-	printf("}\n");
+	cmd = malloc(sizeof(t_cmd));
+	if (ft_strlen(value) == 0)
+		type = T_EMPTY;
+	else if (ft_strcmp(value, "|") == 0)
+		type = T_PIPE;
+	else if (ft_strcmp(value, "<<") == 0)
+		type = T_HER_DOC;
+	else if (ft_strcmp(value, ">") == 0)
+		type = T_OUTPUT;
+	else if (ft_strcmp(value, ">>") == 0)
+		type = T_APPEND;
+	else if (ft_strcmp(value, "<") == 0)
+		type = T_INPUT;
+	else if (ft_strchr(value, '\'') || ft_strchr(value, '\"'))
+		type = T_STRING;
+	else
+		type = T_ARG;
+	cmd->type = type;
+	cmd->value = ft_strdup(value);
+	return (cmd);
 }
 
 void	ft_cmdfree(void *content)

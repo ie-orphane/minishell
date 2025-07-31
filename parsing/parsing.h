@@ -42,18 +42,10 @@ typedef struct s_cmd
 	char	*value;
 }			t_cmd;
 
-extern int	g_exit_status;
-
-typedef struct s_data
-{
-	char	**args;
-	char	**redirs;
-}			t_data;
-
 void		ft_putstrs_fd(char **s, int fd);
 
 int			ft_cmdcmp_type(t_cmd *ref, t_cmd *cmd);
-void		ft_cmdshow(t_list *lst);
+t_cmd		*ft_cmdnew(char *value);
 void		ft_cmdfree(void *content);
 bool		ft_cmdis_redir(t_cmd *cmd);
 void		ft_cmditer(t_list **lst, void (*f)(t_cmd *prev, t_cmd *cmd));
@@ -71,7 +63,7 @@ bool		ft_isredir(const char *str);
 char		*env_key(char *str);
 char		*env_value(char *key);
 
-void		ft_error(char *type, char *err);
+void		ft_err(char *err);
 
 // -----------------------------------
 // Parsing functions
@@ -83,8 +75,6 @@ char		*expand(char *str);
 t_list		*ft_lstsplit(t_list *lst);
 t_list		*ft_fill(t_list *__lst);
 t_list		*ft_spell(const char *str);
-t_list		*ft_identify(t_list *lst);
-t_data		*ft_data_new(char **args, char **redirs);
 
 t_list		*ft_parse(char *line);
 

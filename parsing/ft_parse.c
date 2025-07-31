@@ -12,69 +12,6 @@
 
 #include "parsing.h"
 
-t_list	*ft_spell(const char *str)
-{
-	int		c[4];
-	t_list	*lst;
-
-	ft_bzero(c, sizeof(c));
-	lst = NULL;
-	while (str[c[0]] != '\0')
-	{
-		if (str[c[0]] != ' ')
-		{
-			c[1] = 0;
-			while (str[c[0]] != '\0' && (str[c[0]] != ' ' || c[2]))
-			{
-				if (!c[2] && ft_isquote(str + c[0]))
-					c[3] = str[c[0]];
-				c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
-				c[3] *= c[2];
-				c[0]++;
-				c[1]++;
-			}
-			ft_lstadd_back(&lst, ft_lstnew(ft_substr(str, c[0] - c[1], c[1])));
-		}
-		if (str[c[0]] != '\0')
-			c[0]++;
-	}
-	return (lst);
-}
-
-t_list	*ft_identify(t_list *lst)
-{
-	t_list	*new;
-	t_cmd	*cmd;
-
-	new = NULL;
-	while (lst)
-	{
-		cmd = malloc(sizeof(t_cmd));
-		if (!cmd)
-			return (NULL);
-		if (ft_strlen(lst->content) == 0)
-			cmd->type = T_EMPTY;
-		else if (ft_strcmp(lst->content, "|") == 0)
-			cmd->type = T_PIPE;
-		else if (ft_strcmp(lst->content, "<<") == 0)
-			cmd->type = T_HER_DOC;
-		else if (ft_strcmp(lst->content, ">") == 0)
-			cmd->type = T_OUTPUT;
-		else if (ft_strcmp(lst->content, ">>") == 0)
-			cmd->type = T_APPEND;
-		else if (ft_strcmp(lst->content, "<") == 0)
-			cmd->type = T_INPUT;
-		else if (ft_strchr(lst->content, '\'') || ft_strchr(lst->content, '\"'))
-			cmd->type = T_STRING;
-		else
-			cmd->type = T_ARG;
-		cmd->value = ft_strdup(lst->content);
-		ft_lstadd_back(&new, ft_lstnew(cmd));
-		lst = lst->next;
-	}
-	return (new);
-}
-
 static void	__trim(t_cmd *prev, t_cmd *cmd)
 {
 	int		c[5];
@@ -108,13 +45,37 @@ static void	__trim(t_cmd *prev, t_cmd *cmd)
 		cmd->type = T_EMPTY;
 }
 
+void	__new(t_list **tmp, t_cmd *cmd)
+{
+	char	**arr;
+	size_t	i;
+
+	arr = ft_split(cmd->value, "\n\t ");
+	i = 0;
+	while (arr[i])
+	{
+		if (i == 0)
+		{
+			free(cmd->value);
+			cmd->value = arr[i];
+		}
+		else
+		{
+			cmd = ft_cmdnew(arr[i]);
+			cmd->type = T_ARG;
+			ft_lstinsert(tmp, ft_lstnew(cmd));
+			tmp = &(*tmp)->next;
+		}
+		i++;
+	}
+	free(arr);
+}
+
 void	ft_lstexpand(t_list **lst)
 {
 	t_list	*tmp;
 	t_cmd	*cmd;
 	t_cmd	*prev;
-	char	**arr;
-	size_t	i;
 
 	tmp = *lst;
 	prev = NULL;
@@ -130,28 +91,7 @@ void	ft_lstexpand(t_list **lst)
 		else if (prev && ft_strlen(cmd->value) == 0)
 			cmd->type = T_NONE;
 		else if (cmd->type != T_STRING && ft_strchr(cmd->value, ' '))
-		{
-			arr = ft_split(cmd->value, "\n\t ");
-			i = 0;
-			while (arr[i])
-			{
-				if (i == 0)
-				{
-					free(cmd->value);
-					cmd->value = arr[i];
-				}
-				else
-				{
-					cmd = malloc(sizeof(t_cmd));
-					cmd->type = T_ARG;
-					cmd->value = arr[i];
-					ft_lstinsert(&tmp, ft_lstnew(cmd));
-					tmp = tmp->next;
-				}
-				i++;
-			}
-			free(arr);
-		}
+			__new(&tmp, cmd);
 		prev = tmp->content;
 		tmp = tmp->next;
 	}
@@ -168,7 +108,7 @@ t_list	*ft_parse(char *line)
 	ft_lstclear(&tmp, free);
 	ft_lstremove_if(&lst, "", ft_strcmp, free);
 	tmp = lst;
-	lst = ft_identify(lst);
+	lst = ft_lstmap(lst, (void *(*)(void *))ft_cmdnew, free);
 	ft_lstclear(&tmp, free);
 	ft_lstexpand(&lst);
 	ft_lstremove_if(&lst, &((t_cmd){.type = T_NONE}), ft_cmdcmp_type,

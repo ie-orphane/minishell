@@ -79,9 +79,7 @@ static int	handle_output(char *file, bool append)
 int	handle_redirections(char **args)
 {
 	if (!args)
-	{
 		return (0);
-	}
 	while (*args)
 	{
 		if ((!ft_strcmp(*args, "<") || !ft_strcmp(*args, "<<"))

@@ -10,10 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "main.h"
 
-static void	cleanup_sh(t_list **env)
+static void	cleanup_sh(t_list **lst, t_list **env)
 {
+	ft_lstclear(lst, ft_dataclear);
 	if (env)
 		ft_lstclear(env, env_free);
 }
@@ -49,29 +50,31 @@ static void	print_exit_error(char **args)
 		ft_putendl_fd("too many arguments", STDERR);
 }
 
-int	ft_exit(char **args, t_list **env)
+int	ft_exit(t_list **lst, t_list **env)
 {
-	int	status;
+	int		status;
+	t_data	*data;
 
-	if (!args[1])
+	data = (*lst)->content;
+	if (!data->args[1])
 	{
-		ft_putendl_fd("exit", STDERR);
-		cleanup_sh(env);
+		ft_putendl_fd("exit", 1);
+		cleanup_sh(lst, env);
 		exit(0);
 	}
-	if (!is_numeric(args[1]))
+	if (!is_numeric(data->args[1]))
 	{
-		print_exit_error(args);
-		cleanup_sh(env);
+		print_exit_error(data->args);
+		cleanup_sh(lst, env);
 		exit(255);
 	}
-	if (args[2])
+	if (data->args[2])
 	{
-		print_exit_error(args);
+		print_exit_error(data->args);
 		return (1);
 	}
-	status = (unsigned char)ft_atoi(args[1]);
-	ft_putendl_fd("exit", STDERR);
-	cleanup_sh(env);
+	status = (unsigned char)ft_atoi(data->args[1]);
+	ft_putendl_fd("exit", 1);
+	cleanup_sh(lst, env);
 	exit(status);
 }

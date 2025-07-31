@@ -12,39 +12,20 @@
 
 #include "main.h"
 
-int		g_exit_status = 0;
+t_global	g_global = {
+	.env = NULL,
+	.exit_status = 0,
+};
 
-void	ft_dataclear(void *__data)
-{
-	t_data	*data;
-
-	data = __data;
-	if (!data)
-		return ;
-	ft_strsclear(data->args);
-	ft_strsclear(data->redirs);
-	free(data);
-}
-
-void	sigint_handler(int sig)
-{
-	(void)sig;
-	g_exit_status = 130;
-	rl_replace_line("", 0);
-	printf("\n" GREEN BOLD "larrysh> " RESET);
-}
-
-int	main(int argc, char **argv, char **envp)
+int	main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv,
+		char **envp)
 {
 	char	*line;
 	t_list	*lst;
-	t_list	*env;
 
-	(void)argc;
-	(void)argv;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-	env = env_init(envp);
+	g_global.env = env_init(envp);
 	while (true)
 	{
 		line = readline(GREEN BOLD "larrysh> " RESET);
@@ -55,12 +36,12 @@ int	main(int argc, char **argv, char **envp)
 		if (!lst || !lst->content)
 		{
 			free(line);
+			ft_lstclear(&lst, ft_dataclear);
 			continue ;
 		}
 		if (((t_data *)lst->content)->args)
-			ft_exec(lst, &env);
-		ft_lstclear(&lst, ft_dataclear);
+			ft_exec(&lst, &g_global.env);
 	}
 	printf("exit\n");
-	ft_lstclear(&env, env_free);
+	return (ft_lstclear(&g_global.env, env_free), g_global.exit_status);
 }

@@ -12,13 +12,6 @@
 
 #include "main.h"
 
-void	_sigint_handler(int sig)
-{
-	(void)sig;
-	printf("\n");
-	exit(130);
-}
-
 static void	__herdoc(t_cmd *cmd, int fd)
 {
 	char	*line;
@@ -36,9 +29,9 @@ static void	__herdoc(t_cmd *cmd, int fd)
 			free(tmp);
 			if (!line)
 			{
-				tmp = ft_strreplace("Unexpected end of file (wanted '" BLACK "%s" RESET "')",
-						"%s", cmd->value, 0);
-				ft_error("EOFError", tmp);
+				tmp = ft_strreplace("unexpected end of file (wanted '"
+						BLACK "%s" RESET "')", "%s", cmd->value, 0);
+				ft_err(tmp);
 				free(tmp);
 			}
 			if (!line || ft_strcmp(line, cmd->value) == 0)
@@ -55,12 +48,12 @@ static void	__herdoc(t_cmd *cmd, int fd)
 	else
 	{
 		wait(&status);
-		g_exit_status = WEXITSTATUS(status);
+		g_global.exit_status = WEXITSTATUS(status);
 	}
 	signal(SIGINT, sigint_handler);
 }
 
-void	__fdoc(char ***redirs, t_cmd *next_cmd)
+static void	__fdoc(char ***redirs, t_cmd *next_cmd)
 {
 	int		fd;
 	char	*tmp;
@@ -85,8 +78,8 @@ static bool	__redir(t_list *node, char ***redirs)
 	if (next_cmd->type == T_PIPE || ft_cmdis_redir(next_cmd)
 		|| ft_strcmp(next_cmd->value, "\n") == 0)
 	{
-		tmp = ft_strreplace("Unexpected token '%s'", "%s", next_cmd->value, 0);
-		ft_error("SyntaxError", tmp);
+		tmp = ft_strreplace("unexpected token '%s'", "%s", next_cmd->value, 0);
+		ft_err(tmp);
 		return (free(tmp), true);
 	}
 	if (((t_cmd *)node->content)->type == T_HER_DOC)
@@ -106,20 +99,17 @@ static bool	__fill(t_list **__lst, t_list **lst, char ***args, char ***redirs)
 
 	cmd = (t_cmd *)(*__lst)->content;
 	if ((cmd)->type == T_PIPE && !(*args))
-	{
-		ft_error("SyntaxError", "Unexpected token '|'");
-		return (true);
-	}
+		return (ft_err("unexpected token '|'"), true);
 	if ((cmd)->type == T_PIPE)
 	{
-		ft_lstadd_back(lst, ft_lstnew(ft_data_new((*args), (*redirs))));
+		ft_lstadd_back(lst, ft_lstnew(ft_datanew((*args), (*redirs))));
 		(*args) = NULL;
 		(*redirs) = NULL;
 	}
 	else if (ft_cmdis_redir(cmd))
 	{
 		if (!((*__lst)->next))
-			return (ft_error("SyntaxError", "Unexpected token 'newline'"),
+			return (ft_err("unexpected token 'newline'"),
 				true);
 		if (__redir((*__lst), redirs))
 			return (true);
@@ -146,6 +136,6 @@ t_list	*ft_fill(t_list *__lst)
 		__lst = __lst->next;
 	}
 	if (args || redirs)
-		ft_lstadd_back(&lst, ft_lstnew(ft_data_new(args, redirs)));
+		ft_lstadd_back(&lst, ft_lstnew(ft_datanew(args, redirs)));
 	return (lst);
 }

@@ -10,11 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "main.h"
 
-void	ft_error(char *type, char *err)
+void	ft_err(char *err)
 {
-	printf(RED "%s" BLACK ":" RESET " %s.\n", type, err);
+	ft_putstr_fd(RED, STDERR_FILENO);
+	ft_putstr_fd("larrysh", STDERR_FILENO);
+	ft_putstr_fd(BLACK ":" RESET " ", STDERR_FILENO);
+	ft_putendl_fd(err, STDERR_FILENO);
 }
 
 char	*env_key(char *str)
@@ -36,8 +39,8 @@ char	*env_value(char *key)
 	char	*value;
 
 	if (ft_strcmp(key, "$?") == 0)
-		return (ft_itoa(g_exit_status));
-	value = getenv(key + 1);
+		return (ft_itoa(g_global.exit_status));
+	value = env_get(g_global.env, key + 1);
 	if (!value)
 		value = "";
 	return (ft_strdup(value));

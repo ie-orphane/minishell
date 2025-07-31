@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_data.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "main.h"
 
-# include "exec.h"
-# include "parsing.h"
-
-typedef struct s_data
+t_data	*ft_datanew(char **args, char **redirs)
 {
-	char	**args;
-	char	**redirs;
-}			t_data;
+	t_data	*data;
 
-void		ft_dataclear(void *__data);
-t_data		*ft_datanew(char **args, char **redirs);
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (NULL);
+	data->args = args;
+	data->redirs = redirs;
+	return (data);
+}
 
-typedef struct s_global
+void	ft_dataclear(void *__data)
 {
-	t_list	*env;
-	int		exit_status;
-}	t_global;
+	t_data	*data;
 
-extern t_global	g_global;
-
-// -----------------------------------
-// Signal handlers
-//
-// signal.c
-// -----------------------------------
-void		sigint_handler(int sig);
-void		_sigint_handler(int sig);
-
-void		ft_dataclear(void *__data);
-
-#endif // MAIN_H
+	if (!__data)
+		return ;
+	data = __data;
+	ft_strsclear(data->args);
+	ft_strsclear(data->redirs);
+	free(data);
+	data = NULL;
+}

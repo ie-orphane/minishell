@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "main.h"
 
 void	print_error(char *cmd, char *msg)
 {
@@ -24,9 +24,9 @@ void	print_error(char *cmd, char *msg)
 void	update_exit_status(int status)
 {
 	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+		g_global.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		g_exit_status = 128 + WTERMSIG(status);
+		g_global.exit_status = 128 + WTERMSIG(status);
 }
 
 void	free_2d(char **arr)

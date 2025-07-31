@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "main.h"
 
 void	perror_and_exit(const char *msg)
 {
@@ -18,11 +18,14 @@ void	perror_and_exit(const char *msg)
 	exit(EXIT_FAILURE);
 }
 
-static void	exec_and_exit(t_data **data, t_list **env)
+static void	exec_and_exit(t_list *lst, t_list **env)
 {
+	t_data	**data;
+
+	data = (t_data **)&lst->content;
 	if (is_builtin_cmd((*data)->args))
 	{
-		exec_builtin((*data)->args, env);
+		exec_builtin(&lst, env);
 		exit(EXIT_SUCCESS);
 	}
 	ft_execvpe((*data)->args[0], (*data)->args, env);
@@ -50,7 +53,7 @@ static void	first_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 		if (!has_output_redirection(data->redirs))
 			dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		exec_and_exit(&data, env);
+		exec_and_exit(lst, env);
 	}
 }
 
@@ -60,28 +63,27 @@ static void	second_child(t_list *lst, int fd[2], pid_t *pid, t_list **env)
 
 	data = lst->content;
 	*pid = fork();
-	if (*pid == 0)
+	if (*pid != 0)
+		return ;
+	if (!is_valid_command(data->args[0], *env)
+		&& !is_builtin_cmd(data->args))
 	{
-		if (!is_valid_command(data->args[0], *env)
-			&& !is_builtin_cmd(data->args))
-		{
-			print_error(data->args[0], "command not found");
-			exit(127);
-		}
-		if (handle_redirections(data->redirs) < 0)
-			perror_and_exit("larrysh: redirection error");
-		close(fd[1]);
-		if (!has_input_redirection(data->redirs))
-			dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		if (lst->next)
-		{
-			exec_pipe(lst, env);
-			exit(EXIT_SUCCESS);
-		}
-		else
-			exec_and_exit(&data, env);
+		print_error(data->args[0], "command not found");
+		exit(127);
 	}
+	if (handle_redirections(data->redirs) < 0)
+		perror_and_exit("larrysh: redirection error");
+	close(fd[1]);
+	if (!has_input_redirection(data->redirs))
+		dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	if (lst->next)
+	{
+		exec_pipe(lst, env);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		exec_and_exit(lst, env);
 }
 
 void	exec_pipe(t_list *lst, t_list **env)

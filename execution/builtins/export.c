@@ -55,7 +55,7 @@ int	ft_export(char **args, t_list **env)
 
 	status = 0;
 	if (!*args)
-		ft_lstiter(*env, show_export);
+		ft_lstiter(g_global.env, show_export);
 	while (*args)
 	{
 		set_key_value(args, &key, &value);
