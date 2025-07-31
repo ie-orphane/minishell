@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:54:22 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/20 11:47:55 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd	*ft_cmdnew(char *value)
 	t_cmd	*cmd;
 	t_type	type;
 
-	cmd = malloc(sizeof(t_cmd));
+	cmd = ft_malloc(sizeof(t_cmd));
 	if (ft_strlen(value) == 0)
 		type = T_EMPTY;
 	else if (ft_strcmp(value, "|") == 0)

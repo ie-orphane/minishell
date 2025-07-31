@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_data.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:06:14 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/24 10:47:30 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_data	*ft_datanew(char **args, char **redirs)
 {
 	t_data	*data;
 
-	data = malloc(sizeof(t_data));
+	data = ft_malloc(sizeof(t_data));
 	if (!data)
 		return (NULL);
 	data->args = args;

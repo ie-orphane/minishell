@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:17:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/21 19:32:31 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:31:33 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_env	*env_new(char *key, char *value)
 {
 	t_env	*new;
 
-	new = malloc(sizeof(t_env));
+	new = ft_malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->key = key;
@@ -101,12 +101,7 @@ void	env_set(t_list **env, char *key, char *value)
 		if (ft_strcmp(((t_env *)node->content)->key, key) == 0)
 		{
 			if (value == NULL)
-			{
-				free(key);
 				return ;
-			}
-			free(((t_env *)node->content)->value);
-			free(key);
 			((t_env *)node->content)->value = value;
 			return ;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 19:25:36 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/24 09:54:52 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:16:15 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*build_key_value(t_env *env)
 {
 	char	*joined;
 
-	joined = malloc(ft_strlen(env->key) + ft_strlen(env->value) + 2);
+	joined = ft_malloc(ft_strlen(env->key) + ft_strlen(env->value) + 2);
 	if (!joined)
 		return (NULL);
 	ft_strlcpy(joined, env->key, ft_strlen(env->key) + 1);
@@ -59,7 +59,7 @@ char	**env_to_array(t_list *env)
 	int		i;
 	char	*joined;
 
-	arr = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
+	arr = ft_malloc(sizeof(char *) * (ft_lstsize(env) + 1));
 	if (!arr)
 		return (NULL);
 	i = 0;
@@ -67,7 +67,7 @@ char	**env_to_array(t_list *env)
 	{
 		joined = build_key_value((t_env *)env->content);
 		if (!joined)
-			return (free_2d(arr), NULL);
+			return (NULL);
 		arr[i++] = joined;
 		env = env->next;
 	}

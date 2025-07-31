@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:53:53 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/24 10:45:46 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:17:51 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,11 @@ static void	__herdoc(t_cmd *cmd, int fd)
 		{
 			tmp = ft_strreplace(BLACK "%s> " RESET, "%s", cmd->value, 0);
 			line = readline(tmp);
-			free(tmp);
 			if (!line)
 			{
 				tmp = ft_strreplace("unexpected end of file (wanted '"
 						BLACK "%s" RESET "')", "%s", cmd->value, 0);
 				ft_err(tmp);
-				free(tmp);
 			}
 			if (!line || ft_strcmp(line, cmd->value) == 0)
 				break ;
@@ -40,10 +38,7 @@ static void	__herdoc(t_cmd *cmd, int fd)
 				line = expand(line);
 			ft_putstr_fd(line, fd);
 			ft_putstr_fd("\n", fd);
-			free(line);
 		}
-		free(line);
-		ft_cmdfree(cmd);
 		__exit(0);
 	}
 	else
@@ -62,7 +57,6 @@ static void	__fdoc(char ***redirs, t_cmd *next_cmd)
 
 	tmp = ft_strrand(7);
 	path = ft_strjoin("/tmp/", tmp);
-	free(tmp);
 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	__herdoc(next_cmd, fd);
 	close(fd);
@@ -81,7 +75,7 @@ static bool	__redir(t_list *node, char ***redirs)
 	{
 		tmp = ft_strreplace("unexpected token '%s'", "%s", next_cmd->value, 0);
 		ft_err(tmp);
-		return (free(tmp), true);
+		return (true);
 	}
 	if (((t_cmd *)node->content)->type == T_HER_DOC)
 	{

@@ -10,7 +10,7 @@ SRCS = ft_calloc.c ft_isdigit.c ft_memcpy.c ft_strdup.c ft_strncmp.c ft_tolower.
 	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c \
 	ft_lstiter.c ft_lstmap.c ft_lstremove_if.c ft_lstinsert.c \
-	ft_strjoinc.c ft_strreplace.c \
+	ft_strjoinc.c ft_strreplace.c ft_malloc.c \
 	ft_strsadd.c ft_strsclear.c ft_strcmp.c
 OBJS = $(SRCS:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:17:07 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/22 11:17:17 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:18:41 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 static void	__join(char **str, char c)
 {
-	char	*tmp;
-
-	tmp = *str;
 	*str = ft_strjoinc(*str, c);
-	free(tmp);
 }
 
 char	*ft_strrand(size_t len)

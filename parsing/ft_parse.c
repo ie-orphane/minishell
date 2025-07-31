@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:25:13 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 14:58:39 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:18:25 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	__trim(t_cmd *prev, t_cmd *cmd)
 		{
 			s[2] = s[1];
 			s[1] = ft_strjoinc(s[1], cmd->value[c[0]]);
-			free(s[2]);
 		}
 		c[2] = (c[2] + (cmd->value[c[0]] == c[3])) % 2;
 		c[3] *= c[2];
@@ -40,7 +39,6 @@ static void	__trim(t_cmd *prev, t_cmd *cmd)
 	}
 	s[2] = cmd->value;
 	cmd->value = s[1];
-	free(s[2]);
 	if (ft_strlen(s[1]) == 0 && !(prev && ft_cmdis_redir(prev)))
 		cmd->type = T_EMPTY;
 }
@@ -56,7 +54,6 @@ void	__new(t_list **tmp, t_cmd *cmd)
 	{
 		if (i == 0)
 		{
-			free(cmd->value);
 			cmd->value = arr[i];
 		}
 		else
@@ -68,7 +65,6 @@ void	__new(t_list **tmp, t_cmd *cmd)
 		}
 		i++;
 	}
-	free(arr);
 }
 
 void	ft_lstexpand(t_list **lst)
@@ -100,22 +96,15 @@ void	ft_lstexpand(t_list **lst)
 t_list	*ft_parse(char *line)
 {
 	t_list	*lst;
-	t_list	*tmp;
 
 	lst = ft_spell(line);
-	tmp = lst;
 	lst = ft_lstsplit(lst);
-	ft_lstclear(&tmp, free);
-	ft_lstremove_if(&lst, "", ft_strcmp, free);
-	tmp = lst;
-	lst = ft_lstmap(lst, (void *(*)(void *))ft_cmdnew, free);
-	ft_lstclear(&tmp, free);
+	ft_lstremove_if(&lst, "", ft_strcmp, NULL);
+	lst = ft_lstmap(lst, (void *(*)(void *))ft_cmdnew, NULL);
 	ft_lstexpand(&lst);
 	ft_lstremove_if(&lst, &((t_cmd){.type = T_NONE}), ft_cmdcmp_type,
-		ft_cmdfree);
+		NULL);
 	ft_cmditer(&lst, &__trim);
-	tmp = lst;
 	lst = ft_fill(lst);
-	ft_lstclear(&tmp, ft_cmdfree);
 	return (lst);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 11:38:35 by mbentale          #+#    #+#             */
-/*   Updated: 2024/11/06 12:38:27 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (start + len > ft_strlen(s))
 		len = ft_strlen(s) - start;
-	substr = (char *)malloc(len + 1);
+	substr = (char *)ft_malloc(len + 1);
 	if (substr == NULL)
 		return (NULL);
 	i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:48:05 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 19:24:01 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:16:54 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ int	ft_export(char **args, t_list **env)
 		if (!isvalid_key(key))
 		{
 			status = 1;
-			free(key);
-			free(value);
 			printf("export: `%s': not a valid identifier\n", *(args++));
 			continue ;
 		}

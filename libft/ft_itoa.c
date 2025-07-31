@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:23:37 by mbentale          #+#    #+#             */
-/*   Updated: 2024/10/30 12:48:08 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_itoa(int n)
 	long	num;
 
 	i = count_num(n);
-	str = (char *)malloc(i + 1);
+	str = (char *)ft_malloc(i + 1);
 	if (str == NULL)
 		return (NULL);
 	str[i--] = '\0';

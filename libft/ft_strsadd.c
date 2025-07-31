@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsadd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:47:33 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/05/09 09:50:58 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:14:50 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**ft_strsadd(char **_strs, char *str)
 	len = 0;
 	while (_strs && _strs[len])
 		len++;
-	strs = malloc(sizeof(char *) * (len + 2));
+	strs = ft_malloc(sizeof(char *) * (len + 2));
 	if (!strs)
 		return (NULL);
 	i = 0;
@@ -34,6 +34,5 @@ char	**ft_strsadd(char **_strs, char *str)
 	}
 	strs[len] = str;
 	strs[len + 1] = NULL;
-	free(_strs);
 	return (strs);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:14:33 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/28 16:50:08 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:28:26 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ static void	print_cd_error(char *path)
 static char	*update_path(t_list *env, char *key)
 {
 	char	*cwd;
+	char	*tmp;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (NULL);
+	tmp = cwd;
+	cwd = ft_strdup(cwd);
+	free(tmp);
 	env_set(&env, ft_strdup(key), cwd);
 	return (((t_env *)env->content)->value);
 }
@@ -56,7 +60,7 @@ int	ft_cd(char **args, t_list *env)
 		path_value = env_get(env, "HOME");
 		if (!path_value)
 		{
-			ft_putstr_fd("larrysh: cd: HOME not set", STDERR);
+			ft_putendl_fd("larrysh: cd: HOME not set", STDERR);
 			return (EXIT_FAILURE);
 		}
 	}

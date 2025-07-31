@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:13:27 by mbentale          #+#    #+#             */
-/*   Updated: 2025/05/20 10:18:42 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*word_alloc(const char *str, char *set)
 	i = 0;
 	while (str[i] && !ft_strchr(set, str[i]))
 		i++;
-	ptr = malloc(sizeof(char) * (i + 1));
+	ptr = ft_malloc(sizeof(char) * (i + 1));
 	if (ptr == NULL)
 		return (NULL);
 	i = 0;
@@ -75,7 +75,7 @@ char	**ft_split(const char *str, char *set)
 
 	if (str == NULL || !set)
 		return (NULL);
-	arr = malloc(sizeof(char *) * (count_words(str, set) + 1));
+	arr = ft_malloc(sizeof(char *) * (count_words(str, set) + 1));
 	if (arr == NULL)
 		return (NULL);
 	i = 0;

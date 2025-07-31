@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 10:03:23 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 19:31:16 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:09:01 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_unset(char **args, t_list **env)
 {
 	while (*args)
 	{
-		ft_lstremove_if(env, *args, envcmp_key, env_free);
+		ft_lstremove_if(env, *args, envcmp_key, NULL);
 		args++;
 	}
 	return (0);

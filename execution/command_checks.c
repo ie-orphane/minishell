@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_checks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 08:37:15 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/24 08:49:26 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:15:22 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,8 @@ static bool	check_paths(char **paths, char *cmd)
 	{
 		full_path = join_path(paths[i], cmd);
 		if (access(full_path, X_OK) == 0)
-		{
-			free(full_path);
-			free_2d(paths);
 			return (true);
-		}
-		free(full_path);
 	}
-	free_2d(paths);
 	return (false);
 }
 

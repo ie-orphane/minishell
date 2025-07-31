@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execvpe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:28:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/23 15:59:21 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:16:06 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*join_path(const char *dir, const char *file)
 {
 	char	*res;
 
-	res = malloc(ft_strlen(dir) + ft_strlen(file) + 2);
+	res = ft_malloc(ft_strlen(dir) + ft_strlen(file) + 2);
 	if (!res)
 		return (NULL);
 	ft_strlcpy(res, dir, ft_strlen(dir) + 1);
@@ -48,9 +48,8 @@ static void	set_path(char **paths, char *file, char **argv, char **envp)
 		if (full_path && is_executable(full_path))
 		{
 			execve(full_path, argv, envp);
-			return (free(full_path));
+			return ;
 		}
-		free(full_path);
 	}
 }
 
@@ -67,11 +66,11 @@ int	ft_execvpe(char *file, char **argv, t_list **env)
 	if (!path_env || ft_strchr(file, '/'))
 	{
 		execve(file, argv, envp);
-		return (free_2d(envp), -1);
+		return (-1);
 	}
 	paths = ft_split(path_env, ":");
 	if (!paths)
-		return (free_2d(envp), -1);
+		return (-1);
 	set_path(paths, file, argv, envp);
-	return (free_2d(paths), free_2d(envp), -1);
+	return (-1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:04:50 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 14:59:35 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/07/31 15:17:58 by mb11junior       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,6 @@ char	*expand(char *str)
 			strs[1] = str;
 			str = ft_strreplace(str, strs[2], strs[3], c[0]);
 			c[0] += ft_strlen(strs[3]) - 1;
-			free(strs[1]);
-			free(strs[2]);
-			free(strs[3]);
 		}
 		if (c[0] >= 0)
 			c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
