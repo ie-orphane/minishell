@@ -43,7 +43,8 @@ static void	__herdoc(t_cmd *cmd, int fd)
 			free(line);
 		}
 		free(line);
-		exit(0);
+		ft_cmdfree(cmd);
+		__exit(0);
 	}
 	else
 	{

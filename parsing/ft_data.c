@@ -31,8 +31,16 @@ void	ft_dataclear(void *__data)
 	if (!__data)
 		return ;
 	data = __data;
-	ft_strsclear(data->args);
-	ft_strsclear(data->redirs);
+	if (data->args)
+	{
+		ft_strsclear(data->args);
+		data->args = NULL;
+	}
+	if (data->redirs)
+	{
+		ft_strsclear(data->redirs);
+		data->redirs = NULL;
+	}
 	free(data);
 	data = NULL;
 }

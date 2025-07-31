@@ -14,10 +14,26 @@
 
 t_global	g_global = {
 	.env = NULL,
+	.lst = NULL,
 	.exit_status = 0,
 };
 
-int	main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv,
+void	__exit(int status)
+{
+	if (g_global.env)
+	{
+		ft_lstclear(&g_global.env, env_free);
+		g_global.env = NULL;
+	}
+	if (g_global.lst)
+	{
+		ft_lstclear(&g_global.lst, ft_dataclear);
+		g_global.lst = NULL;
+	}
+	exit(status);
+}
+
+int	main(int __attribute__((unused)) argc, char __attribute__((unused)) * *argv,
 		char **envp)
 {
 	char	*line;
@@ -33,6 +49,7 @@ int	main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv,
 			break ;
 		add_history(line);
 		lst = ft_parse(line);
+		g_global.lst = lst;
 		if (!lst || !lst->content)
 		{
 			free(line);
@@ -43,5 +60,5 @@ int	main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv,
 			ft_exec(&lst, &g_global.env);
 	}
 	printf("exit\n");
-	return (ft_lstclear(&g_global.env, env_free), g_global.exit_status);
+	__exit(g_global.exit_status);
 }

@@ -16,7 +16,7 @@ void	_sigint_handler(int sig)
 {
 	(void)sig;
 	printf("\n");
-	exit(130);
+	__exit(130);
 }
 
 void	sigint_handler(int sig)

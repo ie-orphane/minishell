@@ -30,7 +30,7 @@ void	exec_builtin(t_list **lst, t_list **env)
 	else if (ft_strcmp(*data->args, "env") == 0)
 		ft_env(*env);
 	else if (ft_strcmp(*data->args, "exit") == 0)
-		ft_exit(lst, env);
+		ft_exit(lst);
 }
 
 void	execute_cmd(char **args, t_list **env)
@@ -38,11 +38,11 @@ void	execute_cmd(char **args, t_list **env)
 	if (!is_valid_command(args[0], *env))
 	{
 		print_error(args[0], "command not found");
-		exit(EXIT_FAILURE);
+		__exit(127);
 	}
 	ft_execvpe(args[0], args, env);
 	perror("larrysh");
-	exit(127);
+	__exit(127);
 }
 
 static void	execute(char **args, char **redirs, t_list **env)
@@ -59,7 +59,7 @@ static void	execute(char **args, char **redirs, t_list **env)
 		if (handle_redirections(redirs) < 0)
 			perror_and_exit("larrysh: redirection error");
 		execute_cmd(args, env);
-		exit(EXIT_SUCCESS);
+		__exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
 	update_exit_status(status);
@@ -75,7 +75,7 @@ void	ft_exec(t_list **lst, t_list **env)
 
 	data = (*lst)->content;
 	if ((*lst)->next)
-		exec_pipe(*lst, env);
+		exec_pipe(*lst);
 	else if (is_builtin_cmd(data->args))
 	{
 		saved_stdout = dup(STDOUT_FILENO);

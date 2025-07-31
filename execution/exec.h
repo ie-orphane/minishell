@@ -37,7 +37,7 @@ typedef struct s_env
 // Execution functions
 int			is_builtin_cmd(char **args);
 void		exec_builtin(t_list **lst, t_list **env);
-void		exec_pipe(t_list *lst, t_list **env);
+void		exec_pipe(t_list *lst);
 int			ft_execvpe(char *file, char **argv, t_list **env);
 void		ft_exec(t_list **lst, t_list **env);
 void		update_exit_status(int status);
@@ -56,7 +56,7 @@ int			ft_env(t_list *env);
 int			ft_cd(char **args, t_list *env);
 int			ft_export(char **args, t_list **env);
 int			ft_unset(char **args, t_list **env);
-int			ft_exit(t_list **lst, t_list **env);
+void		ft_exit(t_list **lst);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);

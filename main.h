@@ -24,10 +24,11 @@ typedef struct s_data
 
 void		ft_dataclear(void *__data);
 t_data		*ft_datanew(char **args, char **redirs);
-
+void __exit(int status);
 typedef struct s_global
 {
 	t_list	*env;
+	t_list	*lst;
 	int		exit_status;
 }	t_global;
 
