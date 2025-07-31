@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:57:25 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/31 15:15:35 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/07/31 18:19:10 by mbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	__exit(int status)
 	exit(status);
 }
 
-int	main(int __attribute__((unused)) argc, char __attribute__((unused)) * *argv,
+int	main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv,
 		char **envp)
 {
 	char	*line;

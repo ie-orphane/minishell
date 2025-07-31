@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void	*ft_malloc(size_t size)
 {
@@ -20,22 +20,21 @@ void	*ft_malloc(size_t size)
 	t_list			*new;
 	void			*ptr;
 
-    if (size == 0)
-    {
-        ft_lstclear(&head, free);
-        return (NULL);
-    }
-    ptr = malloc(size);
-    if (!ptr)
-        return (ft_lstclear(&head, free), exit(EXIT_FAILURE), NULL);
-    new = (t_list *)malloc(sizeof(t_list));
-    if (!new)
-    {
-        
-        return (ft_lstclear(&head, free), exit(EXIT_FAILURE), NULL);
-    }
+	if (size == 0)
+	{
+		ft_lstclear(&head, free);
+		return (NULL);
+	}
+	ptr = malloc(size);
+	if (!ptr)
+		return (ft_lstclear(&head, free), exit(EXIT_FAILURE), NULL);
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+	{
+		return (ft_lstclear(&head, free), exit(EXIT_FAILURE), NULL);
+	}
 	new->content = ptr;
 	new->next = NULL;
-    ft_lstadd_back(&head, new);
-    return (ptr);
+	ft_lstadd_back(&head, new);
+	return (ptr);
 }
