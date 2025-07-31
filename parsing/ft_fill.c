@@ -15,50 +15,41 @@
 static void	__herdoc(t_cmd *cmd, int fd)
 {
 	char	*line;
-	char	*tmp;
+
+	signal(SIGINT, _sigint_handler);
+	while (true)
+	{
+		line = readline(ft_strreplace(BLACK "%s> " RESET, "%s", cmd->value, 0));
+		if (!line)
+			ft_err(ft_strreplace("unexpected end of file (wanted '"
+					BLACK "%s" RESET "')", "%s", cmd->value, 0));
+		if (!line || ft_strcmp(line, cmd->value) == 0)
+			break ;
+		if (cmd->type != T_STRING)
+			line = expand(line);
+		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
+	}
+	__exit(0);
+}
+
+static void	__fdoc(char ***redirs, t_cmd *next_cmd)
+{
+	int		fd;
+	char	*path;
 	int		status;
 
+	path = ft_strjoin("/tmp/", ft_strrand(7));
+	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	signal(SIGINT, SIG_IGN);
 	if (fork() == 0)
-	{
-		signal(SIGINT, _sigint_handler);
-		while (true)
-		{
-			tmp = ft_strreplace(BLACK "%s> " RESET, "%s", cmd->value, 0);
-			line = readline(tmp);
-			if (!line)
-			{
-				tmp = ft_strreplace("unexpected end of file (wanted '"
-						BLACK "%s" RESET "')", "%s", cmd->value, 0);
-				ft_err(tmp);
-			}
-			if (!line || ft_strcmp(line, cmd->value) == 0)
-				break ;
-			if (cmd->type != T_STRING)
-				line = expand(line);
-			ft_putstr_fd(line, fd);
-			ft_putstr_fd("\n", fd);
-		}
-		__exit(0);
-	}
+		__herdoc(next_cmd, fd);
 	else
 	{
 		wait(&status);
 		g_global.exit_status = WEXITSTATUS(status);
 	}
 	signal(SIGINT, sigint_handler);
-}
-
-static void	__fdoc(char ***redirs, t_cmd *next_cmd)
-{
-	int		fd;
-	char	*tmp;
-	char	*path;
-
-	tmp = ft_strrand(7);
-	path = ft_strjoin("/tmp/", tmp);
-	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	__herdoc(next_cmd, fd);
 	close(fd);
 	(*redirs) = ft_strsadd((*redirs), ft_strdup("<<"));
 	(*redirs) = ft_strsadd((*redirs), path);
@@ -104,8 +95,7 @@ static bool	__fill(t_list **__lst, t_list **lst, char ***args, char ***redirs)
 	else if (ft_cmdis_redir(cmd))
 	{
 		if (!((*__lst)->next))
-			return (ft_err("unexpected token 'newline'"),
-				true);
+			return (ft_err("unexpected token 'newline'"), true);
 		if (__redir((*__lst), redirs))
 			return (true);
 		(*__lst) = (*__lst)->next;

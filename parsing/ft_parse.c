@@ -15,12 +15,12 @@
 static void	__trim(t_cmd *prev, t_cmd *cmd)
 {
 	int		c[5];
-	char	*s[3];
+	char	*s;
 
 	if (cmd->type != T_STRING)
 		return ;
 	ft_bzero(c, sizeof(c));
-	s[1] = ft_strdup("");
+	s = ft_strdup("");
 	while (cmd->value[c[0]] != '\0')
 	{
 		if (!c[2] && ft_isquote(cmd->value + c[0]))
@@ -29,17 +29,13 @@ static void	__trim(t_cmd *prev, t_cmd *cmd)
 			c[4] = c[0];
 		}
 		else if (!c[2] || cmd->value[c[0]] != c[3])
-		{
-			s[2] = s[1];
-			s[1] = ft_strjoinc(s[1], cmd->value[c[0]]);
-		}
+			s = ft_strjoinc(s, cmd->value[c[0]]);
 		c[2] = (c[2] + (cmd->value[c[0]] == c[3])) % 2;
 		c[3] *= c[2];
 		c[0]++;
 	}
-	s[2] = cmd->value;
-	cmd->value = s[1];
-	if (ft_strlen(s[1]) == 0 && !(prev && ft_cmdis_redir(prev)))
+	cmd->value = s;
+	if (ft_strlen(s) == 0 && !(prev && ft_cmdis_redir(prev)))
 		cmd->type = T_EMPTY;
 }
 
@@ -102,8 +98,7 @@ t_list	*ft_parse(char *line)
 	ft_lstremove_if(&lst, "", ft_strcmp, NULL);
 	lst = ft_lstmap(lst, (void *(*)(void *))ft_cmdnew, NULL);
 	ft_lstexpand(&lst);
-	ft_lstremove_if(&lst, &((t_cmd){.type = T_NONE}), ft_cmdcmp_type,
-		NULL);
+	ft_lstremove_if(&lst, &((t_cmd){.type = T_NONE}), ft_cmdcmp_type, NULL);
 	ft_cmditer(&lst, &__trim);
 	lst = ft_fill(lst);
 	return (lst);
