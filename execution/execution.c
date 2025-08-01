@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbentale <mbentale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 09:40:06 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/31 18:18:48 by mbentale         ###   ########.fr       */
+/*   Updated: 2025/08/01 15:52:05 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static void	execute(char **args, char **redirs, t_list **env)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (handle_redirections(redirs) < 0)
-			perror_and_exit("larrysh: redirection error");
+		if (!handle_redirections(redirs))
+			__exit(EXIT_FAILURE);
 		execute_cmd(args, env);
 		__exit(EXIT_SUCCESS);
 	}
@@ -80,10 +80,10 @@ void	ft_exec(t_list **lst, t_list **env)
 	{
 		saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
-		if (handle_redirections(data->redirs) < 0)
-			perror("larrysh: redirection error");
-		else
+		if (handle_redirections(data->redirs))
 			exec_builtin(lst, env);
+		else
+			g_global.exit_status = 1;
 		dup2(saved_stdout, STDOUT_FILENO);
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdout);

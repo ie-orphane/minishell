@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:17:07 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/31 15:18:41 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 15:08:20 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static void	__join(char **str, char c)
-{
-	*str = ft_strjoinc(*str, c);
-}
 
 char	*ft_strrand(size_t len)
 {
@@ -37,7 +32,7 @@ char	*ft_strrand(size_t len)
 			break ;
 		if (ft_isalnum(buffer) || buffer == '_')
 		{
-			__join(&str, buffer);
+			str = ft_strjoinc(str, buffer);
 			if (ft_strlen(str) == len)
 				break ;
 		}

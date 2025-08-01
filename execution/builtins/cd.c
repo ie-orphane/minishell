@@ -14,7 +14,7 @@
 
 static void	print_cd_error(char *path)
 {
-	ft_putstr_fd("larrysh: cd: ", STDERR);
+	ft_putstr_fd(RED "larrysh:" RESET " cd: ", STDERR);
 	ft_putstr_fd(path, STDERR);
 	ft_putstr_fd(": ", STDERR);
 	ft_putendl_fd(strerror(errno), STDERR);
@@ -52,7 +52,7 @@ int	ft_cd(char **args, t_list *env)
 
 	if (ft_strslen(args) > 2)
 	{
-		ft_putendl_fd("larrysh: cd: too many arguments", STDERR);
+		ft_putendl_fd(RED "larrysh:" RESET " cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
 	if (ft_strslen(args) == 1)
@@ -60,7 +60,7 @@ int	ft_cd(char **args, t_list *env)
 		path_value = env_get(env, "HOME");
 		if (!path_value)
 		{
-			ft_putendl_fd("larrysh: cd: HOME not set", STDERR);
+			ft_putendl_fd(RED "larrysh:" RESET " cd: HOME not set", STDERR);
 			return (EXIT_FAILURE);
 		}
 	}

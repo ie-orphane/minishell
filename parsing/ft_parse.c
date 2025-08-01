@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:25:13 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/31 15:18:25 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 16:27:15 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ void	__new(t_list **tmp, t_cmd *cmd)
 	}
 }
 
+bool	__check(t_cmd *prev, t_cmd *cmd)
+{
+	return (prev && (prev->type == T_APPEND || prev->type == T_OUTPUT
+			|| prev->type == T_INPUT) && (ft_strlen(cmd->value) == 0
+			|| ft_strchr(cmd->value, ' ')));
+}
+
 void	ft_lstexpand(t_list **lst)
 {
 	t_list	*tmp;
@@ -76,10 +83,12 @@ void	ft_lstexpand(t_list **lst)
 		cmd = tmp->content;
 		if (!prev || prev->type != T_HER_DOC)
 			cmd->value = expand(cmd->value);
-		if (prev && (prev->type == T_APPEND || prev->type == T_OUTPUT
-				|| prev->type == T_INPUT) && (ft_strlen(cmd->value) == 0
-				|| ft_strchr(cmd->value, ' ')))
+		if (__check(prev, cmd))
+		{
+			if (ft_strlen(cmd->value) == 0)
+				cmd->value = ft_strdup("\"\"");
 			cmd->type = T_NULL;
+		}
 		else if (prev && ft_strlen(cmd->value) == 0)
 			cmd->type = T_NONE;
 		else if (cmd->type != T_STRING && ft_strchr(cmd->value, ' '))

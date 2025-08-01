@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 18:29:40 by mb11junior        #+#    #+#             */
-/*   Updated: 2025/07/28 19:15:15 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 16:27:55 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "main.h"
 
 bool	has_output_redirection(char **redirs)
 {
@@ -44,54 +44,73 @@ bool	has_input_redirection(char **redirs)
 	return (false);
 }
 
-static int	handle_input(char *file)
+static bool	handle_inout(char *file, int flags, int std)
 {
 	int	fd;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	if (dup2(fd, STDIN_FILENO) < 0)
-		return (close(fd), -1);
-	close(fd);
-	return (0);
-}
-
-static int	handle_output(char *file, bool append)
-{
-	int	flags;
-	int	fd;
-
-	flags = O_WRONLY | O_CREAT;
-	if (append)
-		flags |= O_APPEND;
-	else
-		flags |= O_TRUNC;
 	fd = open(file, flags, 0644);
 	if (fd < 0)
-		return (-1);
-	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (close(fd), -1);
+		return (true);
+	if (dup2(fd, std) < 0)
+		return (close(fd), true);
 	close(fd);
-	return (0);
+	return (false);
 }
 
-int	handle_redirections(char **args)
+static char	*filename(char *str)
 {
-	if (!args)
-		return (0);
-	while (*args)
+	int		c[5];
+	char	*s;
+
+	if ((ft_strcmp("\"\"", str) == 0 || (ft_strchr(str, ' ') && *(str) != '\"'
+				&& *(str + ft_strlen(str) - 1) != '\"')))
 	{
-		if ((!ft_strcmp(*args, "<") || !ft_strcmp(*args, "<<"))
-			&& handle_input(*(args + 1)) < 0)
-			return (-1);
-		else if (!ft_strcmp(*args, ">") && handle_output(*(args + 1),
-				false) < 0)
-			return (-1);
-		else if (!ft_strcmp(*args, ">>") && handle_output(*(args + 1),
-				true) < 0)
-			return (-1);
+		ft_err("ambiguous redirect");
+		return (NULL);
+	}
+	ft_bzero(c, sizeof(c));
+	s = ft_strdup("");
+	while (str[c[0]] != '\0')
+	{
+		if (!c[2] && ft_isquote(str + c[0]))
+		{
+			c[3] = str[c[0]];
+			c[4] = c[0];
+		}
+		else if (!c[2] || str[c[0]] != c[3])
+			s = ft_strjoinc(s, str[c[0]]);
+		c[2] = (c[2] + (str[c[0]] == c[3])) % 2;
+		c[3] *= c[2];
+		c[0]++;
+	}
+	return (s);
+}
+
+bool	handle_redirections(char **args)
+{
+	bool	error;
+	char	*f;
+
+	error = false;
+	while (args && *args)
+	{
+		if (ft_isredir(*args))
+			f = filename(ft_strtrim(*(args + 1), " "));
+		if (!f)
+			return (false);
+		if (!ft_strcmp(*args, "<") || !ft_strcmp(*args, "<<"))
+			error = handle_inout(f, O_RDONLY, STDIN_FILENO);
+		else if (!ft_strcmp(*args, ">"))
+			error = handle_inout(f, O_WRONLY | O_CREAT | O_TRUNC,
+					STDOUT_FILENO);
+		else if (!ft_strcmp(*args, ">>"))
+			error = handle_inout(f, O_WRONLY | O_CREAT | O_APPEND,
+					STDOUT_FILENO);
+		if (error)
+			break ;
 		args++;
 	}
-	return (0);
+	if (error)
+		perror(RED "larrysh: redir error: " RESET);
+	return (!error);
 }

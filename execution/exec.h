@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:02:35 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/28 19:15:50 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 15:50:55 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void		exec_pipe(t_list *lst);
 int			ft_execvpe(char *file, char **argv, t_list **env);
 void		ft_exec(t_list **lst, t_list **env);
 void		update_exit_status(int status);
-int			handle_redirections(char **args);
+bool		handle_redirections(char **args);
 bool		is_valid_command(char *cmd, t_list *env);
 char		*join_path(const char *dir, const char *file);
-void		perror_and_exit(const char *msg);
 void		print_error(char *cmd, char *msg);
 bool		has_output_redirection(char **redirs);
 bool		has_input_redirection(char **redirs);
@@ -57,6 +56,7 @@ int			ft_cd(char **args, t_list *env);
 int			ft_export(char **args, t_list **env);
 int			ft_unset(char **args, t_list **env);
 void		ft_exit(t_list **lst);
+int			ft_strslen(char **s);
 
 // env helper functions
 t_env		*env_new(char *key, char *value);
@@ -65,6 +65,5 @@ void		env_free(void *content);
 char		*env_get(t_list *env, char *key);
 void		env_set(t_list **env, char *key, char *value);
 char		**env_to_array(t_list *env);
-void		free_2d(char **arr);
 
 #endif

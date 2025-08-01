@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 19:24:24 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/28 19:18:20 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 15:51:18 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-void	perror_and_exit(const char *msg)
-{
-	perror(msg);
-	__exit(EXIT_FAILURE);
-}
 
 static void	exec_and_exit(t_list *lst, t_list **env)
 {
@@ -47,8 +41,8 @@ static void	first_child(t_list *lst, int fd[2], pid_t *pid)
 			print_error(data->args[0], "command not found");
 			__exit(127);
 		}
-		if (handle_redirections(data->redirs) < 0)
-			perror_and_exit("larrysh: redirection error");
+		if (!handle_redirections(data->redirs))
+			__exit(EXIT_FAILURE);
 		close(fd[0]);
 		if (!has_output_redirection(data->redirs))
 			dup2(fd[1], STDOUT_FILENO);
@@ -71,8 +65,8 @@ static void	second_child(t_list *lst, int fd[2], pid_t *pid)
 		print_error(data->args[0], "command not found");
 		__exit(127);
 	}
-	if (handle_redirections(data->redirs) < 0)
-		perror_and_exit("larrysh: redirection error");
+	if (!handle_redirections(data->redirs))
+		__exit(EXIT_FAILURE);
 	close(fd[1]);
 	if (!has_input_redirection(data->redirs))
 		dup2(fd[0], STDIN_FILENO);

@@ -6,7 +6,7 @@
 /*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:32:25 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/21 14:57:50 by ielyatim         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:27:43 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,10 @@ typedef struct s_cmd
 	char	*value;
 }			t_cmd;
 
-void		ft_putstrs_fd(char **s, int fd);
-
 int			ft_cmdcmp_type(t_cmd *ref, t_cmd *cmd);
 t_cmd		*ft_cmdnew(char *value);
-void		ft_cmdfree(void *content);
 bool		ft_cmdis_redir(t_cmd *cmd);
 void		ft_cmditer(t_list **lst, void (*f)(t_cmd *prev, t_cmd *cmd));
-
-char		*get_next_line(int fd);
-void		ft_putstr_non_printable(char *str);
-char		*ft_strnon_printable(char *__str);
 
 bool		ft_ispipe(const char *str);
 bool		ft_issredir(const char *str);

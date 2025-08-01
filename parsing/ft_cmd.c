@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:54:22 by ielyatim          #+#    #+#             */
-/*   Updated: 2025/07/31 14:44:22 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 15:05:02 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,6 @@ t_cmd	*ft_cmdnew(char *value)
 	cmd->type = type;
 	cmd->value = ft_strdup(value);
 	return (cmd);
-}
-
-void	ft_cmdfree(void *content)
-{
-	t_cmd	*cmd;
-
-	cmd = (t_cmd *)content;
-	free(cmd->value);
-	free(cmd);
 }
 
 bool	ft_cmdis_redir(t_cmd *cmd)

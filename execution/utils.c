@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mb11junior <mb11junior@student.42.fr>      +#+  +:+       +#+        */
+/*   By: ielyatim <ielyatim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 19:25:36 by mbentale          #+#    #+#             */
-/*   Updated: 2025/07/31 15:16:15 by mb11junior       ###   ########.fr       */
+/*   Updated: 2025/08/01 15:06:58 by ielyatim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	print_error(char *cmd, char *msg)
 {
+	ft_putstr_fd(RED, 2);
 	ft_putstr_fd("larrysh: ", 2);
+	ft_putstr_fd(RESET, 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(msg, 2);
@@ -27,16 +29,6 @@ void	update_exit_status(int status)
 		g_global.exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		g_global.exit_status = 128 + WTERMSIG(status);
-}
-
-void	free_2d(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
 }
 
 static char	*build_key_value(t_env *env)
